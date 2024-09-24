@@ -1,37 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:quizz_app/answer_button.dart';
 import 'package:quizz_app/data/questions.dart';
 
-class QuestionsScreen extends StatefulWidget {
+class QuestionsScreen extends StatelessWidget {
   const QuestionsScreen({
     super.key,
     required this.onSelectAnswer,
+    required this.currentQuestionIndex,
+    required this.totalQuestions,
+    required this.onBack, // Add onBack parameter
   });
 
   final void Function(String answer) onSelectAnswer;
+  final int currentQuestionIndex;
+  final int totalQuestions;
+  final void Function() onBack; // Add onBack function
 
   @override
-  State<QuestionsScreen> createState() {
-    return _QuestionsScreenState();
-  }
-}
-
-class _QuestionsScreenState extends State<QuestionsScreen> {
-  var currentQuestionIndex = 0;
-
-  void answerQuestion(String selectedAnswer) {
-    widget.onSelectAnswer(selectedAnswer);
-    // currentQuestionIndex = currentQuestionIndex + 1;
-    // currentQuestionIndex += 1;
-    setState(() {
-      currentQuestionIndex++; // increments the value by 1
-    });
-  }
-
-  @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     final currentQuestion = questions[currentQuestionIndex];
 
     return SizedBox(
@@ -56,10 +43,17 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               return AnswerButton(
                 answerText: answer,
                 onTap: () {
-                  answerQuestion(answer);
+                  onSelectAnswer(answer);
                 },
               );
-            })
+            }),
+            const SizedBox(height: 20), // Add spacing for the back button
+            TextButton(
+              onPressed: () {
+                onBack(); // Call the back function when clicked
+              },
+              child: const Text('Back'),
+            ),
           ],
         ),
       ),

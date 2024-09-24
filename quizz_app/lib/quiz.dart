@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:quizz_app/start_screen.dart';
 import 'package:quizz_app/questions_screen.dart';
 import 'package:quizz_app/data/questions.dart';
@@ -15,8 +14,9 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  List<String> _selectedAnswers = [];
+  List<String?> _selectedAnswers = List<String?>.filled(questions.length, null);
   var _activeScreen = 'start-screen';
+  int currentQuestionIndex = 0;
 
   void _switchScreen() {
     setState(() {
@@ -25,11 +25,28 @@ class _QuizState extends State<Quiz> {
   }
 
   void _chooseAnswer(String answer) {
-    _selectedAnswers.add(answer);
+    // Store the selected answer
+    _selectedAnswers[currentQuestionIndex] = answer;
 
-    if (_selectedAnswers.length == questions.length) {
+    // Check if all answers are filled
+    if (_selectedAnswers.every((answer) => answer != null)) {
       setState(() {
-        _activeScreen = 'results-screen';
+        _activeScreen = 'results-screen'; // Go to results if all answered
+      });
+    } else {
+      // Move to the next question
+      if (currentQuestionIndex < questions.length - 1) {
+        setState(() {
+          currentQuestionIndex++;
+        });
+      }
+    }
+  }
+
+  void _goBack() {
+    if (currentQuestionIndex > 0) {
+      setState(() {
+        currentQuestionIndex--;
       });
     }
   }
@@ -37,6 +54,9 @@ class _QuizState extends State<Quiz> {
   void restartQuiz() {
     setState(() {
       _activeScreen = 'questions-screen';
+      currentQuestionIndex = 0;
+      _selectedAnswers =
+          List<String?>.filled(questions.length, null); // Reset answers
     });
   }
 
@@ -47,6 +67,9 @@ class _QuizState extends State<Quiz> {
     if (_activeScreen == 'questions-screen') {
       screenWidget = QuestionsScreen(
         onSelectAnswer: _chooseAnswer,
+        currentQuestionIndex: currentQuestionIndex,
+        totalQuestions: questions.length,
+        onBack: _goBack, // Pass back functionality
       );
     }
 

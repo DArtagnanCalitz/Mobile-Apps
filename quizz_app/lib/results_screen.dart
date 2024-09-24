@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:quizz_app/data/questions.dart';
 import 'package:quizz_app/questions_summary/questions_summary.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:quizz_app/data/questions.dart';
+import 'package:quizz_app/questions_summary/questions_summary.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({
@@ -12,7 +16,7 @@ class ResultsScreen extends StatelessWidget {
   });
 
   final void Function() onRestart;
-  final List<String> chosenAnswers;
+  final List<String?> chosenAnswers; // Allow null values here
 
   List<Map<String, Object>> get summaryData {
     final List<Map<String, Object>> summary = [];
@@ -23,7 +27,7 @@ class ResultsScreen extends StatelessWidget {
           'question_index': i,
           'question': questions[i].text,
           'correct_answer': questions[i].answers[0],
-          'user_answer': chosenAnswers[i]
+          'user_answer': chosenAnswers[i] ?? 'Skipped' // Handle null values
         },
       );
     }
@@ -56,13 +60,10 @@ class ResultsScreen extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            QuestionsSummary(summaryData),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
+            QuestionsSummary(
+                summaryData), // Ensure QuestionsSummary handles data correctly
+            const SizedBox(height: 30),
             TextButton.icon(
               onPressed: onRestart,
               style: TextButton.styleFrom(
@@ -70,7 +71,7 @@ class ResultsScreen extends StatelessWidget {
               ),
               icon: const Icon(Icons.refresh),
               label: const Text('Restart Quiz!'),
-            )
+            ),
           ],
         ),
       ),

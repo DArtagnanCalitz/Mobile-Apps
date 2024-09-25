@@ -2,54 +2,48 @@ import 'package:quizz_app/models/quiz_question.dart';
 
 const questions = [
   QuizQuestion(
-    'What are the main building blocks of Flutter UIs?',
+    'Who is your favorite professor? (there is only one correct answer)',
     [
-      'Widgets',
-      'Components',
-      'Blocks',
-      'Functions',
+      'Dr. Grissom',
+      'Dr. Mark Kim',
+      'Dr. Sanders',
+      'Dr. Knisley',
     ],
   ),
-  QuizQuestion('How are Flutter UIs built?', [
-    'By combining widgets in code',
-    'By combining widgets in a visual editor',
-    'By defining widgets in config files',
-    'By using XCode for iOS and Android Studio for Android',
-  ]),
   QuizQuestion(
-    'What\'s the purpose of a StatefulWidget?',
+    'What class do you have the most fun in? (there is only one correct answer)',
     [
-      'Update UI as data changes',
-      'Update data as UI changes',
-      'Ignore data changes',
+      'Mobile Applications',
+      'Database Design',
+      'Intro to Engineering Design',
+      'First Year Experience',
+    ],
+  ),
+  QuizQuestion(
+    'What class do you get the most team collaboration experience from? (there is only one correct answer)',
+    [
+      'CSDS Junior Design',
+      'CSDS Senior Design',
+      '182 Engineering Lab',
       'Render UI that does not depend on data',
     ],
   ),
   QuizQuestion(
-    'Which widget should you try to use more often: StatelessWidget or StatefulWidget?',
+    'Which degree is best? (there is only one correct answer)',
     [
-      'StatelessWidget',
-      'StatefulWidget',
-      'Both are equally good',
-      'None of the above',
+      'Software Engineering',
+      'Computer Science',
+      'Mechanical Engineering',
+      'Electrical and Computer Engineering',
     ],
   ),
   QuizQuestion(
-    'What happens if you change data in a StatelessWidget?',
+    'What music does Dr. G always play during class?',
     [
-      'The UI is not updated',
-      'The UI is updated',
-      'The closest StatefulWidget is updated',
-      'Any nested StatefulWidgets are updated',
-    ],
-  ),
-  QuizQuestion(
-    'How should you update data inside of StatefulWidgets?',
-    [
-      'By calling setState()',
-      'By calling updateData()',
-      'By calling updateUI()',
-      'By calling updateState()',
+      'Lo fi',
+      'Pop',
+      'Rock',
+      'Rap',
     ],
   ),
 ];

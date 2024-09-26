@@ -32,7 +32,7 @@ class QuestionsScreen extends StatelessWidget {
             Text(
               currentQuestion.text,
               style: GoogleFonts.lato(
-                color: const Color.fromARGB(255, 201, 153, 251),
+                color: Colors.white,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -52,7 +52,14 @@ class QuestionsScreen extends StatelessWidget {
               onPressed: () {
                 onBack(); // Call the back function when clicked
               },
-              child: const Text('Back'),
+              child: Text(
+                'Back',
+                style: GoogleFonts.lato(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),

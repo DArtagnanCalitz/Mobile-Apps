@@ -13,7 +13,7 @@ class StartScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Image.asset(
-            '/Users/dartagnancalitz/Mobile-Apps/quizz_app/lib/assets/images/quiz-logo.png',
+            './lib/assets/images/quiz-logo.png',
             width: 300,
             color: const Color.fromARGB(150, 255, 255, 255),
           ),
@@ -26,9 +26,9 @@ class StartScreen extends StatelessWidget {
           // ),
           const SizedBox(height: 80),
           Text(
-            'Learn Flutter the fun way!',
+            'The CSDS Quiz!',
             style: GoogleFonts.lato(
-              color: const Color.fromARGB(255, 237, 223, 252),
+              color: Colors.white,
               fontSize: 24,
             ),
           ),

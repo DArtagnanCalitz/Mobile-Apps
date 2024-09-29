@@ -9,13 +9,18 @@ class QuestionsScreen extends StatelessWidget {
     required this.onSelectAnswer,
     required this.currentQuestionIndex,
     required this.totalQuestions,
-    required this.onBack, // Add onBack parameter
+    required this.onBack,
+    required this.onSkip, // Add onSkip parameter
+    required this.isQuestionAnswered, // Track if question is answered
   });
 
   final void Function(String answer) onSelectAnswer;
   final int currentQuestionIndex;
   final int totalQuestions;
-  final void Function() onBack; // Add onBack function
+  final void Function() onBack;
+  final void Function() onSkip; // Add onSkip function
+  final bool
+      isQuestionAnswered; // New parameter to track if question is answered
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +52,35 @@ class QuestionsScreen extends StatelessWidget {
                 },
               );
             }),
-            const SizedBox(height: 20), // Add spacing for the back button
-            TextButton(
-              onPressed: () {
-                onBack(); // Call the back function when clicked
-              },
-              child: Text(
-                'Back',
-                style: GoogleFonts.lato(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+            const SizedBox(height: 20), // Add spacing for buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: onBack, // Call the back function
+                  child: Text(
+                    'Back',
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+                TextButton(
+                  onPressed: isQuestionAnswered
+                      ? null
+                      : onSkip, // Disable if question is answered
+                  child: Text(
+                    'Skip',
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

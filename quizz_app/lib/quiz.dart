@@ -15,6 +15,8 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   List<String?> _selectedAnswers = List<String?>.filled(questions.length, null);
+  List<bool> _isAnswered =
+      List<bool>.filled(questions.length, false); // Track answered questions
   var _activeScreen = 'start-screen';
   int currentQuestionIndex = 0;
 
@@ -27,9 +29,10 @@ class _QuizState extends State<Quiz> {
   void _chooseAnswer(String answer) {
     // Store the selected answer
     _selectedAnswers[currentQuestionIndex] = answer;
+    _isAnswered[currentQuestionIndex] = true; // Mark question as answered
 
     // Check if all answers are filled
-    if (_selectedAnswers.every((answer) => answer != null)) {
+    if (_isAnswered.every((answered) => answered)) {
       setState(() {
         _activeScreen = 'results-screen'; // Go to results if all answered
       });
@@ -41,6 +44,16 @@ class _QuizState extends State<Quiz> {
         });
       }
     }
+  }
+
+  void _skipQuestion() {
+    setState(() {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++; // Skip to next question
+      }
+      // Mark the current question as skipped (not answered)
+      _isAnswered[currentQuestionIndex] = false;
+    });
   }
 
   void _goBack() {
@@ -57,6 +70,8 @@ class _QuizState extends State<Quiz> {
       currentQuestionIndex = 0;
       _selectedAnswers =
           List<String?>.filled(questions.length, null); // Reset answers
+      _isAnswered =
+          List<bool>.filled(questions.length, false); // Reset answered state
     });
   }
 
@@ -70,6 +85,9 @@ class _QuizState extends State<Quiz> {
         currentQuestionIndex: currentQuestionIndex,
         totalQuestions: questions.length,
         onBack: _goBack, // Pass back functionality
+        onSkip: _skipQuestion, // Pass skip functionality
+        isQuestionAnswered: _isAnswered[
+            currentQuestionIndex], // Track if current question is answered
       );
     }
 

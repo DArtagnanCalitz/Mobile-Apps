@@ -31,54 +31,93 @@ class QuestionsScreen extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(40),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              currentQuestion.text,
-              style: GoogleFonts.lato(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 30),
-            ...currentQuestion.shuffledAnswers.map((answer) {
-              return AnswerButton(
-                answerText: answer,
-                onTap: () {
-                  onSelectAnswer(answer);
-                },
-              );
-            }),
-            const SizedBox(height: 20), // Add spacing for buttons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const SizedBox(height: 100), // Add spacing for the back button
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextButton(
-                  onPressed: onBack, // Call the back function
+                Text(
+                  currentQuestion.text,
+                  style: GoogleFonts.lato(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 30),
+                ...currentQuestion.shuffledAnswers.map((answer) {
+                  return AnswerButton(
+                    answerText: answer,
+                    onTap: () {
+                      onSelectAnswer(answer);
+                    },
+                  );
+                }),
+              ],
+            ),
+            Column(
+              children: [
+                const SizedBox(height: 20), // Add spacing for the back button
+                Center(
                   child: Text(
-                    'Back',
+                    "Question ${currentQuestionIndex + 1} of $totalQuestions",
                     style: GoogleFonts.lato(
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: isQuestionAnswered
-                      ? null
-                      : onSkip, // Disable if question is answered
-                  child: Text(
-                    'Skip',
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                const SizedBox(height: 30), // Add spacing for the back button
+                TweenAnimationBuilder<double>(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeInOut,
+                  tween: Tween<double>(
+                    begin: 0,
+                    end: currentQuestionIndex / totalQuestions,
                   ),
+                  builder: (context, value, _) => LinearProgressIndicator(
+                    value: value,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        Color.fromARGB(255, 47, 47, 47)),
+                    minHeight: 8,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                ),
+                const SizedBox(height: 20), // Add spacing for the back button
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        onBack(); // Call the back function when clicked
+                      },
+                      child: Text(
+                        'Back',
+                        style: GoogleFonts.lato(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: isQuestionAnswered
+                          ? null
+                          : onSkip, // Disable if question is answered
+                      child: Text(
+                        'Skip',
+                        style: GoogleFonts.lato(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

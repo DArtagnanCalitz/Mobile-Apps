@@ -63,6 +63,10 @@ class _QuizState extends State<Quiz> {
       setState(() {
         currentQuestionIndex--;
       });
+    } else {
+      setState(() {
+        _activeScreen = 'start-screen';
+      });
     }
   }
 

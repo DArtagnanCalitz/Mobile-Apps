@@ -52,7 +52,9 @@ class _QuizState extends State<Quiz> {
         currentQuestionIndex++; // Skip to next question
       }
       // Mark the current question as skipped (not answered)
-      _isAnswered[currentQuestionIndex] = false;
+      setState(() {
+        _isAnswered[currentQuestionIndex] = false;
+      });
     });
   }
 

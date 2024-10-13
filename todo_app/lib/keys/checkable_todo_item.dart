@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-
-enum Priority { urgent, normal, low }
+import 'package:intl/intl.dart';
+import 'package:todo_app/keys/priority.dart';
 
 class CheckableTodoItem extends StatefulWidget {
-  const CheckableTodoItem(this.text, this.priority, {super.key});
+  const CheckableTodoItem(this.text, this.priority, this.dueDate, {super.key});
 
-  final String text;
-  final Priority priority;
+  final String text; // The text description of the todo item
+  final Priority priority; // The priority level of the todo item
+  final DateTime? dueDate; // The due date of the todo item
 
   @override
   State<CheckableTodoItem> createState() => _CheckableTodoItemState();
 }
 
 class _CheckableTodoItemState extends State<CheckableTodoItem> {
-  var _done = false;
+  var _done = false; // State variable to track if the todo item is checked
 
   void _setDone(bool? isChecked) {
     setState(() {
@@ -23,14 +24,12 @@ class _CheckableTodoItemState extends State<CheckableTodoItem> {
 
   @override
   Widget build(BuildContext context) {
-    var icon = Icons.low_priority;
+    var icon = Icons.low_priority; // Default icon for low priority
 
     if (widget.priority == Priority.urgent) {
-      icon = Icons.notifications_active;
-    }
-
-    if (widget.priority == Priority.normal) {
-      icon = Icons.list;
+      icon = Icons.notifications_active; // Icon for urgent priority
+    } else if (widget.priority == Priority.normal) {
+      icon = Icons.list; // Icon for normal priority
     }
 
     return Padding(
@@ -43,6 +42,11 @@ class _CheckableTodoItemState extends State<CheckableTodoItem> {
           Icon(icon),
           const SizedBox(width: 12),
           Text(widget.text),
+          if (widget.dueDate != null)
+            Text(
+              'Due: ${DateFormat.yMd().format(widget.dueDate!)}',
+              style: TextStyle(color: Colors.grey),
+            ),
         ],
       ),
     );

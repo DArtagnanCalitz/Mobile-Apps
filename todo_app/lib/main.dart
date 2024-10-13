@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/keys/keys.dart';
+import 'package:todo_app/add_todo_dialog.dart'; // Add this import
+import 'package:todo_app/keys/priority.dart'; // Update this import
 
 void main() {
   var numbers = [1, 2, 3];

@@ -82,6 +82,27 @@ class _KeysState extends State<Keys> {
     );
   }
 
+  void _removeTodo(Todo expense) {
+    final expenseIndex = _todos.indexOf(expense);
+    setState(() {
+      _todos.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: const Text('TODO deleted'),
+        action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              setState(() {
+                _todos.insert(expenseIndex, expense);
+              });
+            }),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,11 +128,37 @@ class _KeysState extends State<Keys> {
             child: ListView(
               children: [
                 for (final todo in _orderedTodos)
-                  CheckableTodoItem(
-                    key: ObjectKey(todo), // Assigns a unique key to the item
-                    todo.text,
-                    todo.priority,
-                    todo.dueDate, // Pass the due date to CheckableTodoItem
+                  Dismissible(
+                    direction: DismissDirection.endToStart,
+                    key: ValueKey(todo),
+                    onDismissed: (direction) {
+                      _removeTodo(todo);
+                    },
+                    background: Container(
+                      padding: const EdgeInsets.only(right: 20.0),
+                      // color:
+                      //     Theme.of(context).colorScheme.error.withOpacity(0.85),
+                      margin: EdgeInsets.symmetric(
+                          horizontal:
+                              Theme.of(context).cardTheme.margin!.horizontal /
+                                  2),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      child: const Align(
+                        alignment: Alignment.centerRight,
+                        child: Text('Delete',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                    child: CheckableTodoItem(
+                      key: ObjectKey(todo), // Assigns a unique key to the item
+                      todo.text,
+                      todo.priority,
+                      todo.dueDate, // Pass the due date to CheckableTodoItem
+                    ),
                   ),
               ],
             ),

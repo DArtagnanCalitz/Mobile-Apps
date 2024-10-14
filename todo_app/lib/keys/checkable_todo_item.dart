@@ -42,11 +42,13 @@ class _CheckableTodoItemState extends State<CheckableTodoItem> {
           Icon(icon),
           const SizedBox(width: 12),
           Text(widget.text),
+          const Spacer(),
           if (widget.dueDate != null)
             Text(
               'Due: ${DateFormat.yMd().format(widget.dueDate!)}',
               style: TextStyle(color: Colors.grey),
             ),
+          const SizedBox(width: 24),
         ],
       ),
     );

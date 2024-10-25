@@ -24,7 +24,7 @@ class TabsScreen extends ConsumerStatefulWidget {
   }
 }
 
-class _TabsScreenState extends ConsumerState<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {                      //We us ConsumerState in stead of Staefull widgets 
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
@@ -46,8 +46,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals = ref.watch(filteredMealsProvider);
-
+    final availableMeals = ref.watch(filteredMealsProvider);                    //We then use the ref object to listeners to make sure that the build method is re-executed when the provider data is changed
     Widget activePage = CategoriesScreen(
       availableMeals: availableMeals,
     );

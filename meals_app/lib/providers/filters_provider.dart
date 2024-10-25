@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';                         //using this because we have states all across the app that need to change such as the favorites state
 
 import 'package:meals/providers/meals_provider.dart';
 

@@ -23,7 +23,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   late AnimationController _animationController;
 
   @override
-  void initState() {
+  void initState() {                                                             //creating and initializing animation controller 
     super.initState();
 
     _animationController = AnimationController(
@@ -58,7 +58,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {                                          //We can then use it in our widget tree to animate certain things
     return AnimatedBuilder(
       animation: _animationController,
       child: GridView(
@@ -80,7 +80,7 @@ class _CategoriesScreenState extends State<CategoriesScreen>
             )
         ],
       ),
-      builder: (context, child) => SlideTransition(
+      builder: (context, child) => SlideTransition(                             // explicit animation gives you allot of control and power but it can get very complicated
         position: Tween(
           begin: const Offset(0, 0.3),
           end: const Offset(0, 0),

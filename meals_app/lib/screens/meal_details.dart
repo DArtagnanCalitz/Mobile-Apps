@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/providers/favorites_provider.dart';
 
-class MealDetailsScreen extends ConsumerWidget {
+class MealDetailsScreen extends ConsumerWidget {                                // We use the Consumer widghet insead of the StatelessWidget
   const MealDetailsScreen({
     super.key,
     required this.meal,
@@ -14,7 +14,7 @@ class MealDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final favoriteMeals = ref.watch(favoriteMealsProvider);
+    final favoriteMeals = ref.watch(favoriteMealsProvider);                     //With this we dont have a globalluy available keyword instead we have the second argument
 
     final isFavorite = favoriteMeals.contains(meal);
 
@@ -22,7 +22,7 @@ class MealDetailsScreen extends ConsumerWidget {
         appBar: AppBar(title: Text(meal.title), actions: [
           IconButton(
             onPressed: () {
-              final wasAdded = ref
+              final wasAdded = ref                                              //Here we can also read values one by one to triggger these methods that may change the state by reaching out to the proveder file
                   .read(favoriteMealsProvider.notifier)
                   .toggleMealFavoriteStatus(meal);
               ScaffoldMessenger.of(context).clearSnackBars();

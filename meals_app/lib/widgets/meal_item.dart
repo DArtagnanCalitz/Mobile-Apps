@@ -39,7 +39,7 @@ class MealItem extends StatelessWidget {
         },
         child: Stack(
           children: [
-            Hero(
+            Hero(                                                               // This hero item can be used to easily animate a widget across digffernt screens
               tag: meal.id,
               child: FadeInImage(
                 placeholder: MemoryImage(kTransparentImage),

@@ -15,7 +15,7 @@ final theme = ThemeData(
 
 void main() {
   runApp(
-    const ProviderScope(
+    const ProviderScope(                                                        //to use river pods we need to wrap opur app in the ProviderScope
       child: App(),
     ),
   );

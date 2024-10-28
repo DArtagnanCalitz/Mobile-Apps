@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/screens/categories.dart';
 import 'package:meals/screens/filters.dart';
 import 'package:meals/screens/meals.dart';
+import 'package:meals/screens/search.dart'; // Import the SearchScreen
 import 'package:meals/widgets/main_drawer.dart';
 import 'package:meals/providers/favorites_provider.dart';
 import 'package:meals/providers/filters_provider.dart';
@@ -24,13 +25,21 @@ class TabsScreen extends ConsumerStatefulWidget {
   }
 }
 
-class _TabsScreenState extends ConsumerState<TabsScreen> {                      //We us ConsumerState in stead of Staefull widgets 
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
     });
+
+    // Navigate to the SearchScreen when the search button is tapped
+    if (index == 2) {
+      // Assuming search button is at index 2
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => SearchScreen()),
+      );
+    }
   }
 
   void _setScreen(String identifier) async {
@@ -46,7 +55,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {                      
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals = ref.watch(filteredMealsProvider);                    //We then use the ref object to listeners to make sure that the build method is re-executed when the provider data is changed
+    final availableMeals = ref.watch(filteredMealsProvider);
     Widget activePage = CategoriesScreen(
       availableMeals: availableMeals,
     );
@@ -79,6 +88,10 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {                      
           BottomNavigationBarItem(
             icon: Icon(Icons.star),
             label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
           ),
         ],
       ),

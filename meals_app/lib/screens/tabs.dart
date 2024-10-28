@@ -17,7 +17,9 @@ const kInitialFilters = {
 };
 
 class TabsScreen extends ConsumerStatefulWidget {
-  const TabsScreen({super.key});
+  const TabsScreen({super.key, required this.onLogout});
+
+  final void Function() onLogout;
 
   @override
   ConsumerState<TabsScreen> createState() {
@@ -43,6 +45,10 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   }
 
   void _setScreen(String identifier) async {
+    if (identifier == 'logout') {
+      widget.onLogout();
+    }
+
     Navigator.of(context).pop();
     if (identifier == 'filters') {
       await Navigator.of(context).push<Map<Filter, bool>>(

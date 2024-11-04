@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopping_list/data/categories.dart';
-
 import 'package:shopping_list/models/grocery_item.dart';
+import 'package:shopping_list/widgets/grocery_item_widget.dart';
 import 'package:shopping_list/widgets/new_item.dart';
+import 'package:shopping_list/widgets/share_grocery_list.dart';
 
 class GroceryList extends StatefulWidget {
   const GroceryList({super.key});
@@ -21,7 +22,7 @@ class _GroceryListState extends State<GroceryList> {
   @override
   void initState() {
     super.initState();
-    _loadedItems = _loadItems(); // Start loading items without awaiting.
+    _loadedItems = _loadItems(); // Start loading items
   }
 
   Future<List<GroceryItem>> _loadItems() async {
@@ -70,28 +71,25 @@ class _GroceryListState extends State<GroceryList> {
       return;
     }
 
+    // Reload the items from the database to ensure they show up
     setState(() {
-      _groceryItems.add(newItem);
+      _loadedItems = _loadItems();
     });
   }
 
-  void _removeItem(GroceryItem item) async {
-    final index = _groceryItems.indexOf(item);
+  void _checkOffItem(GroceryItem item) async {
     setState(() {
-      _groceryItems.remove(item);
+      _groceryItems.remove(item); // Remove it from the list
     });
 
     final url = Uri.https('flutter-prep-3def9-default-rtdb.firebaseio.com',
         'shopping-list/${item.id}.json');
 
-    final response = await http.delete(url);
+    await http.delete(url); // Remove it from the database
+  }
 
-    if (response.statusCode >= 400) {
-      // Optional: Show error message
-      setState(() {
-        _groceryItems.insert(index, item);
-      });
-    }
+  void _shareList() {
+    ShareGroceryList.share(_groceryItems); // Share the list
   }
 
   @override
@@ -100,6 +98,10 @@ class _GroceryListState extends State<GroceryList> {
       appBar: AppBar(
         title: const Text('Your Groceries'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: _shareList,
+          ),
           IconButton(
             onPressed: _addItem,
             icon: const Icon(Icons.add),
@@ -127,22 +129,9 @@ class _GroceryListState extends State<GroceryList> {
 
           return ListView.builder(
             itemCount: snapshot.data!.length,
-            itemBuilder: (ctx, index) => Dismissible(
-              onDismissed: (direction) {
-                _removeItem(snapshot.data![index]);
-              },
-              key: ValueKey(snapshot.data![index].id),
-              child: ListTile(
-                title: Text(snapshot.data![index].name),
-                leading: Container(
-                  width: 24,
-                  height: 24,
-                  color: snapshot.data![index].category.color,
-                ),
-                trailing: Text(
-                  snapshot.data![index].quantity.toString(),
-                ),
-              ),
+            itemBuilder: (ctx, index) => GroceryItemWidget(
+              item: snapshot.data![index],
+              onCheckOff: _checkOffItem,
             ),
           );
         },

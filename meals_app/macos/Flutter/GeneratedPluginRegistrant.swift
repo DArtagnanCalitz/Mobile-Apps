@@ -6,8 +6,6 @@ import FlutterMacOS
 import Foundation
 
 import file_selector_macos
-import path_provider_foundation
-
 import firebase_auth
 import firebase_core
 import path_provider_foundation

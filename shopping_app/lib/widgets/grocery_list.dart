@@ -17,6 +17,7 @@ class GroceryList extends StatefulWidget {
 
 class _GroceryListState extends State<GroceryList> {
   final List<GroceryItem> _groceryItems = [];
+  final Set<String> _checkedItems = {}; // Track checked items
   late Future<List<GroceryItem>> _loadedItems;
 
   @override
@@ -79,7 +80,7 @@ class _GroceryListState extends State<GroceryList> {
 
   void _checkOffItem(GroceryItem item) async {
     setState(() {
-      _groceryItems.remove(item); // Remove it from the list
+      _checkedItems.add(item.id); // Add item ID to checked items
     });
 
     final url = Uri.https('flutter-prep-3def9-default-rtdb.firebaseio.com',
@@ -129,10 +130,17 @@ class _GroceryListState extends State<GroceryList> {
 
           return ListView.builder(
             itemCount: snapshot.data!.length,
-            itemBuilder: (ctx, index) => GroceryItemWidget(
-              item: snapshot.data![index],
-              onCheckOff: _checkOffItem,
-            ),
+            itemBuilder: (ctx, index) {
+              final item = snapshot.data![index];
+              final isChecked =
+                  _checkedItems.contains(item.id); // Check if item is checked
+
+              return GroceryItemWidget(
+                item: item,
+                onCheckOff: _checkOffItem,
+                isChecked: isChecked,
+              );
+            },
           );
         },
       ),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:shopping_list/models/grocery_item.dart';
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "710917968740",
+    "project_id": "cohort-confessions",
+    "storage_bucket": "cohort-confessions.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710917968740:android:b8005894003098b2536071",
+        "android_client_info": {
+          "package_name": "com.cohortconfessions.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9bzoC5D9RJYErQr4nxMk1p5fcfGw6NC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

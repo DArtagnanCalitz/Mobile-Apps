@@ -1,4 +1,3 @@
-import 'package:cohort_confessions/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatelessWidget {

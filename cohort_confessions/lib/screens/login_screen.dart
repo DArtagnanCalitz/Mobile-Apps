@@ -1,7 +1,59 @@
+import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  bool _isLogin = true;
+  String _message = '';
+
+  Future<void> _signUp() async {
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      setState(() {
+        _message = 'Sign-up successful: ${userCredential.user?.email}';
+      });
+    } catch (e) {
+      setState(() {
+        _message = 'Sign-up failed: $e';
+      });
+    }
+  }
+
+  Future<void> _signIn() async {
+    try {
+      print(_emailController.text);
+      print(_passwordController.text);
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      setState(() {
+        _message = 'Login successful: ${userCredential.user?.email}';
+
+        // Navigate to home page after successful login
+        Navigator.pushNamed(context, '/home');
+      });
+    } catch (e) {
+      setState(() {
+        _message = 'Login failed: $e';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,22 +75,25 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               CustomTextField(
-                  label: "Email", controller: TextEditingController()),
+                controller: _emailController,
+                label: "Email",
+              ),
               const SizedBox(height: 16),
               CustomTextField(
-                  label: "Password",
-                  obscureText: true,
-                  controller: TextEditingController()),
+                controller: _passwordController,
+                label: "Password",
+                obscureText: true,
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Navigate to home page after successful login
-                  Navigator.pushNamed(context, '/home');
+                  _signIn();
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                 child: const Text("LOGIN"),
               ),
               const SizedBox(height: 10),
+              Text(_message),
               TextButton(
                 onPressed: () {
                   // Handle forgot password
@@ -61,33 +116,6 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class CustomTextField extends StatelessWidget {
-  final String label;
-  final bool obscureText;
-
-  final dynamic controller;
-
-  const CustomTextField(
-      {super.key,
-      required this.label,
-      this.obscureText = false,
-      required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.white),
-        filled: true,
-        fillColor: Colors.grey[800],
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
       ),
     );
   }

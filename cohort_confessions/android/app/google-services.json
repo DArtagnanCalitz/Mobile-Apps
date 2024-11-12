@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:710917968740:android:b8005894003098b2536071",
         "android_client_info": {
-          "package_name": "com.cohortconfessions.app"
+          "package_name": "com.example.cohort_confessions"
         }
       },
       "oauth_client": [],

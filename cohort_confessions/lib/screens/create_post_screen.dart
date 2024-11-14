@@ -14,15 +14,39 @@ class _CreatePostPageState extends State<CreatePostPage> {
   String weather = '';
   bool isWeatherIncluded = false;
 
+  // Function to check permissions and fetch weather
   Future<void> _getWeather() async {
-    // Get the user's current location
+    // Check the permission status
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
+      // Request location permission if it is denied
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        // Handle permission denial
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Location permission denied')),
+        );
+        return;
+      }
+    }
+
+    // Proceed to get the user's location after permission is granted
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     final latitude = position.latitude;
     final longitude = position.longitude;
 
-    // Fetch weather using OpenWeatherMap API
-    final apiKey = '11a5b159429d4f208290daa61e170ccc'; // Add your API key here
+    // Fetch weather
+    await _fetchWeather(latitude, longitude);
+  }
+
+  // Function to fetch the weather based on location
+  Future<void> _fetchWeather(double latitude, double longitude) async {
+    final apiKey = '11a5b159429d4f208290daa61e170ccc'; // Your API key
     final url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
     final response = await http.get(Uri.parse(url));
@@ -30,9 +54,10 @@ class _CreatePostPageState extends State<CreatePostPage> {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
-        weather = '${data['main']['temp']}°C'; // Store only the temperature
+        weather = '${data['main']['temp']}°C'; // Store the temperature
         isWeatherIncluded = true;
       });
+
       // Show confirmation message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Weather added: $weather')),
@@ -48,6 +73,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
     }
   }
 
+  // Function to post the content
   Future<void> _postContent() async {
     final content = postController.text;
     if (content.isNotEmpty) {
@@ -101,10 +127,15 @@ class _CreatePostPageState extends State<CreatePostPage> {
             ),
             SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _getWeather,
+              onPressed: _getWeather, // Button to fetch weather
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
               child: Text("Include Weather"),
+            ),
+            SizedBox(height: 16),
+            Text(
+              weather.isNotEmpty ? "Weather: $weather" : '',
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
             SizedBox(height: 16),
             ElevatedButton(

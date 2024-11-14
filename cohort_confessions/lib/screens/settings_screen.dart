@@ -17,13 +17,15 @@ class SettingsPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(width: double.infinity),
             Text(
               "YEAR: 2024\nNAME: JOE SMITH\nMAJOR: COMPUTER SCIENCE",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Logic to change year
@@ -50,7 +52,7 @@ class SettingsPage extends StatelessWidget {
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
               child: Text("CHANGE MAJOR"),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Logic to log out
@@ -58,7 +60,7 @@ class SettingsPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: Text("LOGOUT"),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 50),
             Text(
               "App Version 1.2",
               style: TextStyle(color: Colors.grey, fontSize: 12),
@@ -71,6 +73,7 @@ class SettingsPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               child: Text("DELETE ACCOUNT"),
             ),
+            SizedBox(height: 50),
           ],
         ),
       ),

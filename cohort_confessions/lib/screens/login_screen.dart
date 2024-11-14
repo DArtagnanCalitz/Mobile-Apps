@@ -1,17 +1,19 @@
+import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -51,9 +53,11 @@ class _LoginScreenState extends State<LoginScreen> {
       var docSnapshot = await collection.doc(userCredential.user?.uid).get();
       if (docSnapshot.exists) {
         Map<String, dynamic>? data = docSnapshot.data();
-        var value = data?['name']; // <-- The value you want to retrieve.
+        var value = data?['name'];
         print(value);
-        // Call setState if needed.
+        ref.read(userProvider.notifier).setUsername(value);
+        final favoriteMeals = ref.watch(userProvider);
+        print(favoriteMeals.name);
       }
       print(userCredential.user?.uid);
 

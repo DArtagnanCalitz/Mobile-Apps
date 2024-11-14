@@ -6,6 +6,10 @@ class UserNotifier extends StateNotifier<User> {
       : super(const User(
           name: "undefined",
         ));
+
+  void setUsername(String username) {
+    state = User(name: username);
+  }
 }
 
 final userProvider = StateNotifierProvider<UserNotifier, User>((ref) {

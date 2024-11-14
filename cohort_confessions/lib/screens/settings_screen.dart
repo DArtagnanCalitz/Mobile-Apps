@@ -1,8 +1,12 @@
+import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -21,7 +25,7 @@ class SettingsPage extends StatelessWidget {
           children: [
             const SizedBox(width: double.infinity),
             Text(
-              "YEAR: 2024\nNAME: JOE SMITH\nMAJOR: COMPUTER SCIENCE",
+              "YEAR: 2024\nNAME: ${user.name}\nMAJOR: COMPUTER SCIENCE",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),

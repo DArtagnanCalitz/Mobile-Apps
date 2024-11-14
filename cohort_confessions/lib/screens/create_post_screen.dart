@@ -1,15 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class CreatePostPage extends StatefulWidget {
+class CreatePostPage extends ConsumerStatefulWidget {
   @override
   _CreatePostPageState createState() => _CreatePostPageState();
 }
 
-class _CreatePostPageState extends State<CreatePostPage> {
+class _CreatePostPageState extends ConsumerState<CreatePostPage> {
   final TextEditingController postController = TextEditingController();
   String weather = '';
   bool isWeatherIncluded = false;
@@ -76,11 +78,12 @@ class _CreatePostPageState extends State<CreatePostPage> {
   // Function to post the content
   Future<void> _postContent() async {
     final content = postController.text;
+    final user = ref.watch(userProvider);
     if (content.isNotEmpty) {
       final postRef = FirebaseFirestore.instance.collection('posts').doc();
       await postRef.set({
-        'name':
-            'User', // Replace with actual username from FirebaseAuth if needed
+        'name': user
+            .name, // Replace with actual username from FirebaseAuth if needed
         'content': content,
         'weather': isWeatherIncluded
             ? weather

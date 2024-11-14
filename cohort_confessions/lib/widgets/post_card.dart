@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final String username;
   final String content;
   final int upvotes;
@@ -17,6 +17,35 @@ class PostCard extends StatelessWidget {
     required this.comments,
     required this.weather, // Include weather in the constructor
   });
+
+  @override
+  _PostCardState createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  late int upvotes;
+  late int downvotes;
+
+  @override
+  void initState() {
+    super.initState();
+    upvotes = widget.upvotes; // Initialize with the initial upvotes
+    downvotes = widget.downvotes; // Initialize with the initial downvotes
+  }
+
+  // Method to handle upvote (FACTS) click
+  void _incrementUpvotes() {
+    setState(() {
+      upvotes++;
+    });
+  }
+
+  // Method to handle downvote (CAP) click
+  void _incrementDownvotes() {
+    setState(() {
+      downvotes++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +69,7 @@ class PostCard extends StatelessWidget {
                 ),
                 SizedBox(width: 12),
                 Text(
-                  username,
+                  widget.username,
                   style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,
@@ -51,7 +80,7 @@ class PostCard extends StatelessWidget {
             ),
             SizedBox(height: 12),
             Text(
-              content,
+              widget.content,
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -65,14 +94,36 @@ class PostCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.thumb_up, color: Colors.blue, size: 20),
+                    // Make "FACTS" clickable
+                    GestureDetector(
+                      onTap: _incrementUpvotes,
+                      child: Text(
+                        "FACTS",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                     SizedBox(width: 4),
                     Text(
                       upvotes.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                     SizedBox(width: 16),
-                    Icon(Icons.thumb_down, color: Colors.red, size: 20),
+                    // Make "CAP" clickable
+                    GestureDetector(
+                      onTap: _incrementDownvotes,
+                      child: Text(
+                        "CAP",
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                     SizedBox(width: 4),
                     Text(
                       downvotes.toString(),
@@ -82,11 +133,11 @@ class PostCard extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    if (weather.isNotEmpty) ...[
+                    if (widget.weather.isNotEmpty) ...[
                       Icon(Icons.wb_sunny, color: Colors.yellow, size: 20),
                       SizedBox(width: 4),
                       Text(
-                        weather,
+                        widget.weather,
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ],
@@ -97,7 +148,7 @@ class PostCard extends StatelessWidget {
                     Icon(Icons.comment, color: Colors.green, size: 20),
                     SizedBox(width: 4),
                     Text(
-                      comments.toString(),
+                      widget.comments.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ],

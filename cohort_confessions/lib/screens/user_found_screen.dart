@@ -1,4 +1,3 @@
-import 'package:cohort_confessions/screens/login_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
@@ -22,15 +21,19 @@ class UserFoundScreen extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             SizedBox(height: 20),
-            CustomTextField(
-                label: "Email", controller: TextEditingController()),
-            CustomTextField(
-                label: "Password",
+            TextField(
+                decoration: const InputDecoration(labelText: "Email"),
+                controller: TextEditingController()),
+            TextField(
+                decoration: const InputDecoration(labelText: "Password"),
                 obscureText: true,
                 controller: TextEditingController()),
-            CustomTextField(
-                label: "Degree", controller: TextEditingController()),
-            CustomTextField(label: "Year", controller: TextEditingController()),
+            TextField(
+                decoration: const InputDecoration(labelText: "Degree"),
+                controller: TextEditingController()),
+            TextField(
+                decoration: const InputDecoration(labelText: "Year"),
+                controller: TextEditingController()),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

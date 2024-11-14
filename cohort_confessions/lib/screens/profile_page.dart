@@ -1,4 +1,3 @@
-import 'package:cohort_confessions/screens/main_home_page.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cohort_confessions/screens/login_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
@@ -34,10 +33,15 @@ class UserNotFoundScreen extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             SizedBox(height: 20),
-            CustomTextField(label: "Name", controller: nameController),
-            CustomTextField(
-                label: "Middle Name", controller: middleNameController),
-            CustomTextField(label: "Last Name", controller: lastNameController),
+            TextField(
+                decoration: const InputDecoration(labelText: "Name"),
+                controller: nameController),
+            TextField(
+                decoration: const InputDecoration(labelText: "Middle Name"),
+                controller: middleNameController),
+            TextField(
+                decoration: const InputDecoration(labelText: "Last Name"),
+                controller: lastNameController),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {

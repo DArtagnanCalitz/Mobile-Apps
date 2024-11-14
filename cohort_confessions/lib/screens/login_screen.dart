@@ -1,6 +1,8 @@
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -44,10 +46,19 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       setState(() {
         _message = 'Login successful: ${userCredential.user?.email}';
-
-        // Navigate to home page after successful login
-        Navigator.pushNamed(context, '/home');
       });
+      final collection = FirebaseFirestore.instance.collection('users');
+      var docSnapshot = await collection.doc(userCredential.user?.uid).get();
+      if (docSnapshot.exists) {
+        Map<String, dynamic>? data = docSnapshot.data();
+        var value = data?['name']; // <-- The value you want to retrieve.
+        print(value);
+        // Call setState if needed.
+      }
+      print(userCredential.user?.uid);
+
+      // Navigate to home page after successful login
+      Navigator.pushNamed(context, '/home');
     } catch (e) {
       setState(() {
         _message = 'Login failed: $e';
@@ -106,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 onPressed: () {
                   // Navigate to SearchScreen for sign-up
-                  Navigator.pushNamed(context, '/search');
+                  Navigator.pushNamed(context, '/signup');
                 },
                 child: const Text(
                   "Sign Up!",

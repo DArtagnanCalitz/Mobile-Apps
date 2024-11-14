@@ -1,89 +1,92 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cohort_confessions/screens/create_post_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 
 class MainHomePage extends StatelessWidget {
-  final TextEditingController postController = TextEditingController();
-
-  // Add post to Firestore
-  Future<void> addPostToFeed(String content) async {
-    CollectionReference posts = FirebaseFirestore.instance.collection('posts');
-    await posts.add({
-      'content': content,
-      'createdAt': FieldValue.serverTimestamp(),
-      'name': 'Sample User', // Replace with logged-in user name or profile data
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Cohort Confessions"),
+        title: Text(
+          "Cohort Confessions",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.black,
         elevation: 0,
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: postController,
-              decoration: InputDecoration(
-                hintText: "Write your post...",
-                hintStyle: TextStyle(color: Colors.grey),
-                filled: true,
-                fillColor: Colors.grey[900],
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
-              ),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              String content = postController.text;
-              if (content.isNotEmpty) {
-                await addPostToFeed(content);
-                postController.clear(); // Clear the text field after posting
-              }
-            },
-            child: Text("Post"),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('posts')
-                  .orderBy('createdAt', descending: true)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(
-                      child: Text("No posts yet",
-                          style: TextStyle(color: Colors.white)));
-                }
-                var posts = snapshot.data!.docs;
-                return ListView.builder(
-                  itemCount: posts.length,
-                  itemBuilder: (context, index) {
-                    var post = posts[index];
-                    return PostCard(
-                      username: '@${post['name']}',
-                      content: post['content'],
-                      upvotes: 0, // Add functionality for upvotes later
-                      downvotes: 0, // Add functionality for downvotes later
-                      comments: 0, // Add functionality for comments later
-                    );
-                  },
+      body: Expanded(
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('posts')
+              .orderBy('createdAt', descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Center(
+                child: Text(
+                  "No messages in your feed",
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
+            }
+            var posts = snapshot.data!.docs;
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                var post = posts[index];
+                return PostCard(
+                  username: '@${post['name']}',
+                  content: post['content'],
+                  upvotes: 0, // Add functionality for upvotes later
+                  downvotes: 0, // Add functionality for downvotes later
+                  comments: 0,
+                  weather: '', // Add functionality for comments later
                 );
               },
-            ),
+            );
+          },
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.white,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle_outline),
+            label: 'New Post',
           ),
         ],
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushNamed(context, '/home');
+          } else if (index == 1) {
+            Navigator.pushNamed(context, '/profile');
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CreatePostPage()),
+            );
+          }
+        },
       ),
     );
   }

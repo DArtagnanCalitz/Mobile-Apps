@@ -8,21 +8,33 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Cohort Confessions"),
+        title: Text(
+          "Cohort Confessions",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.black,
         elevation: 0,
+        centerTitle: true,
       ),
       body: ListView(
         children: [
           ProfileHeader(username: "_username"),
+          Divider(color: Colors.grey[800]),
           ...List.generate(
-              5,
-              (index) => PostCard(
-                  username: "_username",
-                  content: "Sample post $index",
-                  upvotes: 15,
-                  downvotes: 2,
-                  comments: 1)),
+            5,
+            (index) => PostCard(
+              username: "_username",
+              content: "Sample post $index",
+              upvotes: 15,
+              downvotes: 2,
+              comments: 1,
+              weather: '',
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -62,9 +74,44 @@ class ProfileHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(radius: 40, backgroundColor: Colors.grey),
-          SizedBox(height: 8),
-          Text(username, style: TextStyle(color: Colors.white, fontSize: 18)),
+          CircleAvatar(
+            radius: 40,
+            backgroundColor: Colors.grey[700],
+            child: Icon(Icons.person, size: 40, color: Colors.white),
+          ),
+          SizedBox(height: 12),
+          Text(
+            username,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    '8 posts',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    '8 replies',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    '2 upvotes',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ],
       ),
     );

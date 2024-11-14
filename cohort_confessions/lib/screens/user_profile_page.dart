@@ -22,11 +22,13 @@ class UserProfilePage extends StatelessWidget {
           ...List.generate(
               5,
               (index) => PostCard(
-                  username: username,
-                  content: "User's post $index",
-                  upvotes: 20,
-                  downvotes: 4,
-                  comments: 3)),
+                    username: username,
+                    content: "User's post $index",
+                    upvotes: 20,
+                    downvotes: 4,
+                    comments: 3,
+                    weather: '',
+                  )),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:cohort_confessions/screens/login_screen.dart';
+import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
 class UserFoundScreen extends StatelessWidget {

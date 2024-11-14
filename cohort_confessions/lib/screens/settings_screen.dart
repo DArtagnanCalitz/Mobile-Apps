@@ -56,6 +56,17 @@ class SettingsPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Logic to log out
+                // set user info to default
+                // Move to login screen
+                Navigator.pushNamed(context, '/');
+                // toast
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    duration: Duration(seconds: 3),
+                    content: Text('Logged out of Cohort Confessions'),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: Text("LOGOUT"),

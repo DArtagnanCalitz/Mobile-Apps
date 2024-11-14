@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cohort_confessions/screens/signup_congrat_screen.dart';
+import 'package:cohort_confessions/screens/signup/signup_congrat_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 

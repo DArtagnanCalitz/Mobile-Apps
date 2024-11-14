@@ -1,11 +1,8 @@
-import 'package:cohort_confessions/screens/signup_confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'screens/login_screen.dart';
-import 'screens/signup_screen.dart';
-import 'screens/user_found_screen.dart';
-import 'screens/user_not_found_screen.dart';
+import 'screens/signup/signup_screen.dart';
 import 'screens/main_home_page.dart';
 import 'screens/profile_page.dart';
 //import 'screens/settings_page.dart'; // Add this import
@@ -27,11 +24,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginScreen(),
         '/signup': (context) => SignupScreen(),
-        // '/signup/confirm': (context) => SignupConfirmScreen(),
-        // '/signup/username': (context) => SignupConfirmScreen(),
-        '/userFound': (context) => UserFoundScreen(),
-        '/userNotFound': (context) => UserNotFoundScreen(),
-        // '/addAccount': (context) => SignupScreen(),
         '/home': (context) => MainHomePage(),
         '/profile': (context) => ProfilePage(),
         //'/settings': (context) => SettingsPage(), // Add the settings page route

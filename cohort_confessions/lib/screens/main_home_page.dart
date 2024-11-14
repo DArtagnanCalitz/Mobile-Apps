@@ -21,6 +21,7 @@ class MainHomePage extends StatelessWidget {
         backgroundColor: Colors.black,
         elevation: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false, // Removes the back button
       ),
       body: Expanded(
         child: StreamBuilder(

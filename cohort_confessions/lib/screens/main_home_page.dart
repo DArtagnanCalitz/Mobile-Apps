@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/screens/create_post_screen.dart';
+import 'package:cohort_confessions/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 
@@ -74,6 +75,10 @@ class MainHomePage extends StatelessWidget {
             icon: Icon(Icons.add_circle_outline),
             label: 'New Post',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
         ],
         onTap: (index) {
           if (index == 0) {
@@ -84,6 +89,11 @@ class MainHomePage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => CreatePostPage()),
+            );
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SettingsPage()),
             );
           }
         },

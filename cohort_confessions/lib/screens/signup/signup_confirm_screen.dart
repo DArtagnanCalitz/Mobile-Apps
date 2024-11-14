@@ -1,4 +1,4 @@
-import 'package:cohort_confessions/screens/signup_username_screen.dart';
+import 'package:cohort_confessions/screens/signup/signup_username_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignupConfirmScreen extends StatefulWidget {

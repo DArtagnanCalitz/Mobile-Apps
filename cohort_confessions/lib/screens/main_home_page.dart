@@ -1,16 +1,51 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/screens/create_post_screen.dart';
+import 'package:cohort_confessions/screens/feed_screen.dart';
+import 'package:cohort_confessions/screens/profile_page.dart';
 import 'package:cohort_confessions/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 
-class MainHomePage extends StatelessWidget {
+class MainHomePage extends StatefulWidget {
+  @override
+  State<MainHomePage> createState() => _MainHomePageState();
+}
+
+class _MainHomePageState extends State<MainHomePage> {
+  int _selectedPageIndex = 0;
+
+  void _selectPage(int index) {
+    if (index == 2) {
+      index = _selectedPageIndex;
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => CreatePostPage()),
+      );
+    } else if (index == 3) {
+      index = _selectedPageIndex;
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => SettingsPage()),
+      );
+    }
+    setState(() {
+      _selectedPageIndex = index;
+      print(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Widget content = const FeedScreen();
+
+    if (_selectedPageIndex == 0) {
+      // content = Navigator.pushNamed(context, '/home');
+    } else if (_selectedPageIndex == 1) {
+      content = ProfilePage();
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Cohort Confessions",
           style: TextStyle(
             fontSize: 24,
@@ -23,47 +58,14 @@ class MainHomePage extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false, // Removes the back button
       ),
-      body: Expanded(
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('posts')
-              .orderBy('createdAt', descending: true)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(
-                child: Text(
-                  "No messages in your feed",
-                  style: TextStyle(color: Colors.white),
-                ),
-              );
-            }
-            var posts = snapshot.data!.docs;
-            return ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                var post = posts[index];
-                return PostCard(
-                  username: '@${post['name']}',
-                  content: post['content'],
-                  upvotes: 0, // Add functionality for upvotes later
-                  downvotes: 0, // Add functionality for downvotes later
-                  comments: 0,
-                  weather: '', // Add functionality for comments later
-                );
-              },
-            );
-          },
-        ),
-      ),
+      body: content,
       bottomNavigationBar: BottomNavigationBar(
+        onTap: _selectPage,
+        currentIndex: _selectedPageIndex,
         backgroundColor: Colors.black,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.white,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -81,23 +83,6 @@ class MainHomePage extends StatelessWidget {
             label: 'Settings',
           ),
         ],
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushNamed(context, '/home');
-          } else if (index == 1) {
-            Navigator.pushNamed(context, '/profile');
-          } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CreatePostPage()),
-            );
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SettingsPage()),
-            );
-          }
-        },
       ),
     );
   }

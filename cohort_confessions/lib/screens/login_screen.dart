@@ -63,12 +63,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         if (userCredential.user?.uid == null) {
           throw const FormatException();
         }
+        Image image;
+        switch (photo) {
+          case 'dog':
+            image = Image.asset('assets/images/dog.jpg');
+            break;
+          case 'cat':
+            image = Image.asset('assets/images/dog.jpg');
+            break;
+          default:
+            image = Image.asset('assets/images/undefined.webp');
+        }
         var user = UserAccount(
           name: name,
           uid: userCredential.user!.uid,
           year: year,
           major: major,
-          photo: Image.network(photo),
+          photo: image,
         );
         ref.read(userProvider.notifier).setUser(user);
       }

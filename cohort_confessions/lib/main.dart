@@ -32,10 +32,10 @@ class MyApp extends StatelessWidget {
       theme: theme,
       initialRoute: '/',
       routes: {
-        '/': (context) => LoginScreen(),
-        '/signup': (context) => SignupScreen(),
-        '/home': (context) => MainHomePage(),
-        '/profile': (context) => ProfilePage(),
+        '/': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
+        '/home': (context) => const MainHomePage(),
+        '/profile': (context) => const ProfilePage(),
       },
     );
   }

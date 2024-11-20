@@ -4,6 +4,8 @@ import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
+
   @override
   _SignupScreenState createState() => _SignupScreenState();
 }
@@ -84,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             const SizedBox(height: 16),
             CustomTextField(
-              controller: passwordController,
+              controller: yearController,
               label: "Year",
             ),
             const SizedBox(height: 20),
@@ -94,7 +96,13 @@ class _SignupScreenState extends State<SignupScreen> {
                 // addUserToFirestore();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (ctx) => SignupUsernameScreen(),
+                    builder: (ctx) => SignupUsernameScreen(
+                      email: emailController.text,
+                      password:
+                          passwordController.text, //maybe create account here?
+                      degree: degreeController.text,
+                      year: yearController.text,
+                    ),
                   ),
                 );
               },

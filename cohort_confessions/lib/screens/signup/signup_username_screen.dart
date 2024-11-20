@@ -4,6 +4,19 @@ import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
 class SignupUsernameScreen extends StatefulWidget {
+  const SignupUsernameScreen({
+    super.key,
+    required this.email,
+    required this.password,
+    required this.degree,
+    required this.year,
+  });
+
+  final String email;
+  final String password;
+  final String degree;
+  final String year;
+
   @override
   _SignupUsernameScreenState createState() => _SignupUsernameScreenState();
 }
@@ -12,29 +25,29 @@ class _SignupUsernameScreenState extends State<SignupUsernameScreen> {
   final TextEditingController usernameController = TextEditingController();
 
   // Function to handle user data addition to Firestore
-  // Future<void> addUserToFirestore() async {
-  //   try {
-  //     // Get the user details from the controllers
-  //     String email = usernameController.text;
-  //     String password = passwordController.text;
-  //     String degree = degreeController.text;
-  //     String year = degreeController.text;
+  Future<void> addUserToFirestore() async {
+    try {
+      // Get the user details from the controllers
+      String username = usernameController.text;
 
-  //     // Add data to Firestore
-  //     await FirebaseFirestore.instance.collection('users').add({
-  //       'name': email,
-  //       'middleName': password,
-  //       'lastName': degree,
-  //       'year': year,
-  //       'createdAt': FieldValue.serverTimestamp(),
-  //     });
+      // Add data to Firestore
+      await FirebaseFirestore.instance.collection('users').add({
+        'name': username,
+        'degree': widget.degree,
+        'year': widget.year,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
-  //     // Navigate to main home page after successful addition
-  //     Navigator.pushReplacementNamed(context, '/home');
-  //   } catch (e) {
-  //     print("Error adding user: $e");
-  //   }
-  // }
+      // Navigate to confirmation (profile) page after successful addition
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => SignupConfirmScreen(),
+        ),
+      );
+    } catch (e) {
+      print("Error adding user: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +80,7 @@ class _SignupUsernameScreenState extends State<SignupUsernameScreen> {
             ElevatedButton(
               onPressed: () {
                 // Call the method to add user to Firestore
-                // addUserToFirestore();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => SignupConfirmScreen(),
-                  ),
-                );
+                addUserToFirestore();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: const Text(

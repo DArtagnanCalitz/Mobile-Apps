@@ -27,6 +27,14 @@ class _FeedScreenState extends State<FeedScreen> {
   Future<PostUser> _getPostUser(String uid) async {
     print("test");
     print(users[uid]);
+
+    if (uid == "undefined") {
+      print("undefined!");
+      return PostUser(
+          username: "ROCKBOTTOM",
+          photo: Image.asset("assets/images/undefined.webp"));
+    }
+
     if (users[uid] == null) {
       print("try get user");
       final collection = FirebaseFirestore.instance.collection('users');
@@ -98,10 +106,10 @@ class _FeedScreenState extends State<FeedScreen> {
                     // TODO: fix connection state
                   }
                   if (projectSnap.connectionState == ConnectionState.done) {
-                    var user = users[uid]!;
+                    // var user = users[uid]!;
                     return PostCard(
-                      username: '@${user.username}',
-                      photo: user.photo!,
+                      username: '@${projectSnap.data!.username}',
+                      photo: projectSnap.data!.photo!,
                       content: content,
                       upvotes: 0, // Add functionality for upvotes later
                       downvotes: 0, // Add functionality for downvotes later

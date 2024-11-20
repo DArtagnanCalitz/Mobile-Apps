@@ -5,6 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProfilePage extends ConsumerWidget {
+  const ProfilePage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
@@ -52,7 +54,7 @@ class ProfileHeader extends StatelessWidget {
     if (photo == null) {
       icon = const Icon(Icons.person, size: 40, color: Colors.white);
     } else {
-      icon = photo?.image;
+      icon = photo;
     }
 
     return Padding(

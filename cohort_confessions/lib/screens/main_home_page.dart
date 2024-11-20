@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 
 class MainHomePage extends StatefulWidget {
+  const MainHomePage({super.key});
+
   @override
   State<MainHomePage> createState() => _MainHomePageState();
 }

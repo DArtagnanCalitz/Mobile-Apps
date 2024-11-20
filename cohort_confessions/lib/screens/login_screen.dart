@@ -41,8 +41,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _signIn() async {
     try {
-      print(_emailController.text);
-      print(_passwordController.text);
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,

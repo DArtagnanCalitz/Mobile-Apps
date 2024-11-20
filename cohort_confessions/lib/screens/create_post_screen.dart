@@ -82,8 +82,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
     if (content.isNotEmpty) {
       final postRef = FirebaseFirestore.instance.collection('posts').doc();
       await postRef.set({
-        'name': user
-            .name, // Replace with actual username from FirebaseAuth if needed
+        'uid': user.uid,
         'content': content,
         'weather': isWeatherIncluded
             ? weather

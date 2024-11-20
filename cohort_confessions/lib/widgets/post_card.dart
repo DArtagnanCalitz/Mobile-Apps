@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class PostCard extends StatefulWidget {
   final String username;
   final String content;
+  final Image photo;
   final int upvotes;
   final int downvotes;
   final int comments;
@@ -11,6 +12,7 @@ class PostCard extends StatefulWidget {
   const PostCard({
     super.key,
     required this.username,
+    required this.photo,
     required this.content,
     required this.upvotes,
     required this.downvotes,
@@ -49,6 +51,22 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
+    var revisions_content;
+    if (widget.comments != 0) {
+      revisions_content = Row(
+        children: [
+          Icon(Icons.edit_calendar, color: Colors.green, size: 20),
+          SizedBox(width: 4),
+          Text(
+            widget.comments.toString(),
+            style: TextStyle(color: Colors.white, fontSize: 14),
+          ),
+        ],
+      );
+    } else {
+      revisions_content = Container();
+    }
+
     return Card(
       color: Colors.grey[850], // Darker card background
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -65,7 +83,8 @@ class _PostCardState extends State<PostCard> {
                 CircleAvatar(
                   backgroundColor: Colors.grey[700],
                   radius: 20,
-                  child: Icon(Icons.person, color: Colors.white),
+                  // child: Icon(Icons.person, color: Colors.white),
+                  backgroundImage: widget.photo.image,
                 ),
                 SizedBox(width: 12),
                 Text(
@@ -143,16 +162,7 @@ class _PostCardState extends State<PostCard> {
                     ],
                   ],
                 ),
-                Row(
-                  children: [
-                    Icon(Icons.comment, color: Colors.green, size: 20),
-                    SizedBox(width: 4),
-                    Text(
-                      widget.comments.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ],
-                ),
+                revisions_content,
               ],
             ),
           ],

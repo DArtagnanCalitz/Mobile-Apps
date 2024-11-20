@@ -1,6 +1,7 @@
 import 'package:cohort_confessions/screens/profile_page.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class UserProfilePage extends StatelessWidget {
   final String username;
@@ -23,6 +24,7 @@ class UserProfilePage extends StatelessWidget {
               5,
               (index) => PostCard(
                     username: username,
+                    photo: Image.memory(kTransparentImage),
                     content: "User's post $index",
                     upvotes: 20,
                     downvotes: 4,

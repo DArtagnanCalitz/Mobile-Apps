@@ -2,6 +2,7 @@ import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProfilePage extends ConsumerWidget {
   @override
@@ -21,6 +22,7 @@ class ProfilePage extends ConsumerWidget {
           5,
           (index) => PostCard(
             username: "_username",
+            photo: Image.memory(kTransparentImage),
             content: "Sample post $index",
             upvotes: 15,
             downvotes: 2,

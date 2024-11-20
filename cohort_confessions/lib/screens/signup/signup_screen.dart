@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cohort_confessions/screens/signup/signup_confirm_screen.dart';
+import 'package:cohort_confessions/screens/signup/signup_username_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
 
@@ -94,7 +94,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 // addUserToFirestore();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (ctx) => SignupConfirmScreen(),
+                    builder: (ctx) => SignupUsernameScreen(),
                   ),
                 );
               },

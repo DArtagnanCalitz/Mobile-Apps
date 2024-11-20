@@ -1,4 +1,4 @@
-import 'package:cohort_confessions/screens/signup/signup_username_screen.dart';
+import 'package:cohort_confessions/screens/signup/signup_congrat_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignupConfirmScreen extends StatefulWidget {
@@ -7,6 +7,7 @@ class SignupConfirmScreen extends StatefulWidget {
 }
 
 class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
+  var _selection = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +28,45 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
             ),
             const SizedBox(height: 16),
             const Text(
-              "Please confirm your email!",
+              "Please confirm a profile picture!",
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
             const SizedBox(height: 16),
-            const Text(
-              "WIP: Placeholder screen",
-              style: TextStyle(color: Colors.white, fontSize: 18),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => setState(() => _selection = 0),
+                  child: CircleAvatar(
+                    radius: 55,
+                    backgroundColor: _selection == 0
+                        ? Colors.blueAccent
+                        : Colors.transparent,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey,
+                      backgroundImage:
+                          Image.asset('assets/images/dog.jpg').image,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 25),
+                GestureDetector(
+                  onTap: () => setState(() => _selection = 1),
+                  child: CircleAvatar(
+                    radius: 55,
+                    backgroundColor: _selection == 1
+                        ? Colors.blueAccent
+                        : Colors.transparent,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey,
+                      backgroundImage:
+                          Image.asset('assets/images/cat.jpg').image,
+                    ),
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -42,7 +75,7 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
                 // addUserToFirestore();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (ctx) => SignupUsernameScreen(),
+                    builder: (ctx) => SignupCongratScreen(),
                   ),
                 );
               },

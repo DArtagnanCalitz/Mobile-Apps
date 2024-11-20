@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cohort_confessions/screens/signup/signup_congrat_screen.dart';
+import 'package:cohort_confessions/screens/signup/signup_confirm_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:flutter/material.dart';
-
-import 'signup_congrat_screen.dart';
 
 class SignupUsernameScreen extends StatefulWidget {
   @override
@@ -72,7 +70,7 @@ class _SignupUsernameScreenState extends State<SignupUsernameScreen> {
                 // addUserToFirestore();
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (ctx) => SignupCongratScreen(),
+                    builder: (ctx) => SignupConfirmScreen(),
                   ),
                 );
               },
@@ -82,10 +80,10 @@ class _SignupUsernameScreenState extends State<SignupUsernameScreen> {
             TextButton(
               onPressed: () {
                 // Navigate to SearchScreen for sign-up
-                Navigator.pushNamed(context, '/');
+                Navigator.pop(context);
               },
               child: const Text(
-                "Sign In Instead",
+                "Back",
                 style: TextStyle(color: Colors.blue),
               ),
             ),

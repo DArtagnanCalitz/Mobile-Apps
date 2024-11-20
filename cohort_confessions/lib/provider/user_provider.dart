@@ -1,17 +1,22 @@
 import 'package:cohort_confessions/models/user.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class UserNotifier extends StateNotifier<User> {
+class UserNotifier extends StateNotifier<UserAccount> {
   UserNotifier()
-      : super(const User(
+      : super(UserAccount(
           name: "undefined",
+          uid: "undefined",
+          major: "undefined",
+          year: -1,
+          photo: Image.asset('assets/images/undefined.webp'),
         ));
 
-  void setUsername(String username) {
-    state = User(name: username);
+  void setUser(UserAccount newUser) {
+    state = newUser;
   }
 }
 
-final userProvider = StateNotifierProvider<UserNotifier, User>((ref) {
+final userProvider = StateNotifierProvider<UserNotifier, UserAccount>((ref) {
   return UserNotifier();
 });

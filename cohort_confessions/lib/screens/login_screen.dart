@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cohort_confessions/models/user.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -53,13 +54,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       var docSnapshot = await collection.doc(userCredential.user?.uid).get();
       if (docSnapshot.exists) {
         Map<String, dynamic>? data = docSnapshot.data();
-        var value = data?['name'];
-        print(value);
-        ref.read(userProvider.notifier).setUsername(value);
-        final favoriteMeals = ref.watch(userProvider);
-        print(favoriteMeals.name);
+        var name = data?['name'];
+        var year = data?['year'];
+        var major = data?['major'];
+        var photo = data?['photo'];
+        if (int.tryParse(year) == null) {
+          throw const FormatException();
+        }
+        year = int.parse(year);
+        if (userCredential.user?.uid == null) {
+          throw const FormatException();
+        }
+        var user = UserAccount(
+          name: name,
+          uid: userCredential.user!.uid,
+          year: year,
+          major: major,
+          photo: Image.network(photo),
+        );
+        ref.read(userProvider.notifier).setUser(user);
       }
-      print(userCredential.user?.uid);
 
       // Navigate to home page after successful login
       Navigator.pushNamed(context, '/home');

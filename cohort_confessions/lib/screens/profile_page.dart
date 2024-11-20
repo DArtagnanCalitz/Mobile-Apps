@@ -1,12 +1,21 @@
+import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+
     return ListView(
       children: [
-        ProfileHeader(username: "_username"),
+        ProfileHeader(
+          // todo: all usernames must be lowercase and start with underscore
+          // username: "_username",
+          username: user.name,
+          photo: user.photo,
+        ),
         Divider(color: Colors.grey[800]),
         ...List.generate(
           5,
@@ -25,12 +34,24 @@ class ProfilePage extends StatelessWidget {
 }
 
 class ProfileHeader extends StatelessWidget {
-  final String username;
+  ProfileHeader({
+    required this.username,
+    this.photo,
+  });
 
-  ProfileHeader({required this.username});
+  final String username;
+  final Image? photo;
 
   @override
   Widget build(BuildContext context) {
+    var icon;
+
+    if (photo == null) {
+      icon = const Icon(Icons.person, size: 40, color: Colors.white);
+    } else {
+      icon = photo?.image;
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -39,7 +60,7 @@ class ProfileHeader extends StatelessWidget {
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.grey[700],
-            child: const Icon(Icons.person, size: 40, color: Colors.white),
+            backgroundImage: icon,
           ),
           const SizedBox(height: 12),
           Text(

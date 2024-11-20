@@ -96,6 +96,8 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userProvider);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -108,7 +110,11 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(radius: 40, backgroundColor: Colors.grey),
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.grey,
+              backgroundImage: user.photo.image,
+            ),
             SizedBox(height: 8),
             Text(
               "Write Your Post:",

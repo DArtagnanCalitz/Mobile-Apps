@@ -25,7 +25,7 @@ class SettingsPage extends ConsumerWidget {
           children: [
             const SizedBox(width: double.infinity),
             Text(
-              "YEAR: 2024\nNAME: ${user.name}\nMAJOR: COMPUTER SCIENCE",
+              "YEAR: ${user.year}\nUSERNAME: ${user.name}\nMAJOR: ${user.major}",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
@@ -45,7 +45,7 @@ class SettingsPage extends ConsumerWidget {
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text("CHANGE NAME"),
+              child: Text("CHANGE USERNAME"),
             ),
             SizedBox(height: 10),
             ElevatedButton(

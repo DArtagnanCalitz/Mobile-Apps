@@ -88,6 +88,7 @@ class _FeedScreenState extends State<FeedScreen> {
             itemBuilder: (context, index) {
               var post = posts[index];
               String content = post['content'];
+              String weather = post['weather'];
               var uid = post['uid'];
               return FutureBuilder(
                 future: _getPostUser(uid),
@@ -97,14 +98,15 @@ class _FeedScreenState extends State<FeedScreen> {
                     // TODO: fix connection state
                   }
                   if (projectSnap.connectionState == ConnectionState.done) {
+                    var user = users[uid]!;
                     return PostCard(
-                      username: '@${users[uid]!.username}',
-                      photo: users[uid]!.photo!,
+                      username: '@${user.username}',
+                      photo: user.photo!,
                       content: content,
                       upvotes: 0, // Add functionality for upvotes later
                       downvotes: 0, // Add functionality for downvotes later
                       comments: 0,
-                      weather: '', // Add functionality for comments later
+                      weather: weather, // Add functionality for comments later
                     );
                   }
 

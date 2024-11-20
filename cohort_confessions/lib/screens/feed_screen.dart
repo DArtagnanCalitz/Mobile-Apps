@@ -71,10 +71,10 @@ class _FeedScreenState extends State<FeedScreen> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 "No messages in your feed",
                 // TODO: add button to invite people
@@ -111,7 +111,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   }
 
                   // TODO: make this with skeleton indicator
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 },
               );
             },

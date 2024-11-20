@@ -36,7 +36,8 @@ class ProfilePage extends ConsumerWidget {
 }
 
 class ProfileHeader extends StatelessWidget {
-  ProfileHeader({
+  const ProfileHeader({
+    super.key,
     required this.username,
     this.photo,
   });
@@ -62,7 +63,7 @@ class ProfileHeader extends StatelessWidget {
           CircleAvatar(
             radius: 40,
             backgroundColor: Colors.grey[700],
-            backgroundImage: icon,
+            backgroundImage: icon.image,
           ),
           const SizedBox(height: 12),
           Text(

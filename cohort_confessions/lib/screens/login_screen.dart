@@ -117,7 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   _signIn();
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                child: Text(
+                child: const Text(
                   "LOGIN",
                   style: TextStyle(color: Colors.white),
                 ),

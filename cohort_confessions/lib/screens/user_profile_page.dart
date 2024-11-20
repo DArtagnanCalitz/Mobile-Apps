@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class UserProfilePage extends StatelessWidget {
-  final String username;
+  const UserProfilePage({super.key, required this.username});
 
-  UserProfilePage({required this.username});
+  final String username;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Cohort Confessions"),
+        title: const Text("Cohort Confessions"),
         backgroundColor: Colors.black,
         elevation: 0,
       ),

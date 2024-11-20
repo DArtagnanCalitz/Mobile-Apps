@@ -79,11 +79,11 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
                   ),
                 );
               },
-              child: Text(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              child: const Text(
                 "Done!",
                 style: TextStyle(color: Colors.white),
               ),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             ),
             TextButton(
               onPressed: () {

@@ -30,7 +30,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
           permission == LocationPermission.deniedForever) {
         // Handle permission denial
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Location permission denied')),
+          const SnackBar(content: Text('Location permission denied')),
         );
         return;
       }
@@ -48,7 +48,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
 
   // Function to fetch the weather based on location
   Future<void> _fetchWeather(double latitude, double longitude) async {
-    final apiKey = '11a5b159429d4f208290daa61e170ccc'; // Your API key
+    const apiKey = '11a5b159429d4f208290daa61e170ccc'; // Your API key
     final url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
     final response = await http.get(Uri.parse(url));
@@ -70,7 +70,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
       });
       // Show error message if fetching weather fails
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch weather')),
+        const SnackBar(content: Text('Failed to fetch weather')),
       );
     }
   }
@@ -100,7 +100,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Cohort Confessions"),
+        title: const Text("Cohort Confessions"),
         backgroundColor: Colors.black,
         elevation: 0,
       ),
@@ -115,7 +115,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
               backgroundImage: user.photo.image,
             ),
             SizedBox(height: 8),
-            Text(
+            const Text(
               "Write Your Post:",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
@@ -133,26 +133,26 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _getWeather, // Button to fetch weather
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text(
+              child: const Text(
                 "Include Weather",
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               weather.isNotEmpty ? "Weather: $weather" : '',
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _postContent,
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: Text(
+              child: const Text(
                 "Post",
                 style: TextStyle(color: Colors.white),
               ),

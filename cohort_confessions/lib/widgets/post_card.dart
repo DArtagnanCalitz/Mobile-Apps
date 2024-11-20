@@ -55,11 +55,11 @@ class _PostCardState extends State<PostCard> {
     if (widget.comments != 0) {
       revisions_content = Row(
         children: [
-          Icon(Icons.edit_calendar, color: Colors.green, size: 20),
-          SizedBox(width: 4),
+          const Icon(Icons.edit_calendar, color: Colors.green, size: 20),
+          const SizedBox(width: 4),
           Text(
             widget.comments.toString(),
-            style: TextStyle(color: Colors.white, fontSize: 14),
+            style: const TextStyle(color: Colors.white, fontSize: 14),
           ),
         ],
       );
@@ -86,10 +86,10 @@ class _PostCardState extends State<PostCard> {
                   // child: Icon(Icons.person, color: Colors.white),
                   backgroundImage: widget.photo.image,
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Text(
                   widget.username,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -97,16 +97,16 @@ class _PostCardState extends State<PostCard> {
                 ),
               ],
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text(
               widget.content,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
                 height: 1.5, // Line height for readability
               ),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Divider(color: Colors.grey[700]),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,7 +116,7 @@ class _PostCardState extends State<PostCard> {
                     // Make "FACTS" clickable
                     GestureDetector(
                       onTap: _incrementUpvotes,
-                      child: Text(
+                      child: const Text(
                         "FACTS",
                         style: TextStyle(
                           color: Colors.blue,
@@ -125,16 +125,16 @@ class _PostCardState extends State<PostCard> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Text(
                       upvotes.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
-                    SizedBox(width: 16),
+                    const SizedBox(width: 16),
                     // Make "CAP" clickable
                     GestureDetector(
                       onTap: _incrementDownvotes,
-                      child: Text(
+                      child: const Text(
                         "CAP",
                         style: TextStyle(
                           color: Colors.red,
@@ -143,21 +143,23 @@ class _PostCardState extends State<PostCard> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Text(
                       downvotes.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
                     ),
                   ],
                 ),
                 Row(
                   children: [
                     if (widget.weather.isNotEmpty) ...[
-                      Icon(Icons.wb_sunny, color: Colors.yellow, size: 20),
-                      SizedBox(width: 4),
+                      const Icon(Icons.wb_sunny,
+                          color: Colors.yellow, size: 20),
+                      const SizedBox(width: 4),
                       Text(
                         widget.weather,
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ],
                   ],

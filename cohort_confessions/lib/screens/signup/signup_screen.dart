@@ -87,7 +87,7 @@ class _SignupScreenState extends State<SignupScreen> {
               controller: passwordController,
               label: "Year",
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Call the method to add user to Firestore
@@ -98,11 +98,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 );
               },
-              child: Text(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              child: const Text(
                 "Done!",
                 style: TextStyle(color: Colors.white),
               ),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             ),
             TextButton(
               onPressed: () {

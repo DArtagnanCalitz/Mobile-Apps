@@ -10,11 +10,11 @@ class SettingsPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Settings"),
+        title: const Text("Settings"),
         backgroundColor: Colors.black,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -27,45 +27,45 @@ class SettingsPage extends ConsumerWidget {
             Text(
               "YEAR: ${user.year}\nUSERNAME: ${user.name}\nMAJOR: ${user.major}",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Logic to change year
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text(
+              child: const Text(
                 "CHANGE YEAR",
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 // Logic to change name
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text(
+              child: const Text(
                 "CHANGE USERNAME",
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 // Logic to change major
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text(
+              child: const Text(
                 "CHANGE MAJOR",
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Logic to log out
@@ -82,28 +82,28 @@ class SettingsPage extends ConsumerWidget {
                 );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: Text(
+              child: const Text(
                 "LOGOUT",
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 50),
-            Text(
+            const SizedBox(height: 50),
+            const Text(
               "App Version 1.2",
               style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 // Logic to delete account
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text(
+              child: const Text(
                 "DELETE ACCOUNT",
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
           ],
         ),
       ),

@@ -138,7 +138,10 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
               onPressed: _getWeather, // Button to fetch weather
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text("Include Weather"),
+              child: Text(
+                "Include Weather",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             SizedBox(height: 16),
             Text(
@@ -149,7 +152,10 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
             ElevatedButton(
               onPressed: _postContent,
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: Text("Post"),
+              child: Text(
+                "Post",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

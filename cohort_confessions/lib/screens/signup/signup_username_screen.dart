@@ -74,7 +74,10 @@ class _SignupUsernameScreenState extends State<SignupUsernameScreen> {
                   ),
                 );
               },
-              child: Text("Done!"),
+              child: Text(
+                "Done!",
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             ),
             TextButton(

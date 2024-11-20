@@ -79,7 +79,10 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
                   ),
                 );
               },
-              child: Text("Done!"),
+              child: Text(
+                "Done!",
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             ),
             TextButton(

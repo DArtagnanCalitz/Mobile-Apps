@@ -36,7 +36,10 @@ class SettingsPage extends ConsumerWidget {
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text("CHANGE YEAR"),
+              child: Text(
+                "CHANGE YEAR",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             SizedBox(height: 10),
             ElevatedButton(
@@ -45,7 +48,10 @@ class SettingsPage extends ConsumerWidget {
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text("CHANGE USERNAME"),
+              child: Text(
+                "CHANGE USERNAME",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             SizedBox(height: 10),
             ElevatedButton(
@@ -54,7 +60,10 @@ class SettingsPage extends ConsumerWidget {
               },
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: Text("CHANGE MAJOR"),
+              child: Text(
+                "CHANGE MAJOR",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             SizedBox(height: 30),
             ElevatedButton(
@@ -73,7 +82,10 @@ class SettingsPage extends ConsumerWidget {
                 );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: Text("LOGOUT"),
+              child: Text(
+                "LOGOUT",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             SizedBox(height: 50),
             Text(
@@ -86,7 +98,10 @@ class SettingsPage extends ConsumerWidget {
                 // Logic to delete account
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              child: Text("DELETE ACCOUNT"),
+              child: Text(
+                "DELETE ACCOUNT",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             SizedBox(height: 50),
           ],

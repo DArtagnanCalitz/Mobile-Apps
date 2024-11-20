@@ -6,7 +6,14 @@ import 'screens/login_screen.dart';
 import 'screens/signup/signup_screen.dart';
 import 'screens/main_home_page.dart';
 import 'screens/profile_page.dart';
-//import 'screens/settings_page.dart'; // Add this import
+
+final theme = ThemeData(
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(
+    brightness: Brightness.dark,
+    seedColor: const Color.fromARGB(255, 1, 135, 213),
+  ),
+);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,15 +27,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
+      theme: theme,
       initialRoute: '/',
       routes: {
         '/': (context) => LoginScreen(),
         '/signup': (context) => SignupScreen(),
         '/home': (context) => MainHomePage(),
         '/profile': (context) => ProfilePage(),
-        //'/settings': (context) => SettingsPage(), // Add the settings page route
-        //'/createPost': (context) => CreatePostPage(),
       },
     );
   }

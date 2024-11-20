@@ -37,7 +37,10 @@ class SignupCongratScreen extends StatelessWidget {
                 // addUserToFirestore();
                 Navigator.pushNamed(context, '/home');
               },
-              child: Text("Continue"),
+              child: Text(
+                "Continue",
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             ),
           ],

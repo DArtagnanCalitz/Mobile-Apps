@@ -17,31 +17,34 @@ class _MainHomePageState extends State<MainHomePage> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
+
     if (index == 2) {
-      index = _selectedPageIndex;
+      // Navigate to CreatePostPage (doesn't replace the home page)
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => CreatePostPage()),
+        MaterialPageRoute(builder: (context) => const CreatePostPage()),
       );
     } else if (index == 3) {
-      index = _selectedPageIndex;
+      // Navigate to Settings page
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => SettingsPage()),
       );
     }
-    setState(() {
-      _selectedPageIndex = index;
-      print(index);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget content = const FeedScreen();
-
+    // Change content based on the selected index
+    Widget content;
     if (_selectedPageIndex == 0) {
-      // content = Navigator.pushNamed(context, '/home');
+      content = const FeedScreen();
     } else if (_selectedPageIndex == 1) {
-      content = ProfilePage();
+      content = const ProfilePage();
+    } else {
+      content =
+          const SizedBox(); // Placeholder for other screens like CreatePost or Settings
     }
 
     return Scaffold(

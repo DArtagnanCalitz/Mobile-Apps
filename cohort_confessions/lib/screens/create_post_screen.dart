@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CreatePostPage extends ConsumerStatefulWidget {
+  const CreatePostPage({super.key});
+
   @override
   _CreatePostPageState createState() => _CreatePostPageState();
 }
@@ -15,9 +17,14 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
   final TextEditingController postController = TextEditingController();
   String weather = '';
   bool isWeatherIncluded = false;
+  bool isLoadingWeather = false;
 
   // Function to check permissions and fetch weather
   Future<void> _getWeather() async {
+    setState(() {
+      isLoadingWeather = true; // Indicate that we're fetching weather
+    });
+
     // Check the permission status
     LocationPermission permission = await Geolocator.checkPermission();
 
@@ -32,6 +39,9 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Location permission denied')),
         );
+        setState(() {
+          isLoadingWeather = false;
+        });
         return;
       }
     }
@@ -52,6 +62,10 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
     final url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
     final response = await http.get(Uri.parse(url));
+
+    setState(() {
+      isLoadingWeather = false; // Reset loading state
+    });
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -75,11 +89,12 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
     }
   }
 
-  // Function to post the content
+  /// Function to post the content
   Future<void> _postContent() async {
     final content = postController.text;
     final user = ref.watch(userProvider);
-    if (content.isNotEmpty) {
+    if (content.isNotEmpty && content.length >= 5) {
+      // Ensure content is long enough
       final postRef = FirebaseFirestore.instance.collection('posts').doc();
       await postRef.set({
         'uid': user.uid,
@@ -89,7 +104,15 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
             : '', // Add weather only if it's included
         'createdAt': Timestamp.now(),
       });
-      Navigator.pop(context); // Return to the previous page
+
+      // Pass the postId to navigate back with the postId
+      Navigator.pop(
+          context, postRef.id); // Pass the postId back to the previous screen
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Post content must be at least 5 characters long')),
+      );
     }
   }
 
@@ -112,7 +135,9 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
             CircleAvatar(
               radius: 40,
               backgroundColor: Colors.grey,
-              backgroundImage: user.photo.image,
+              backgroundImage: user.photo?.image ??
+                  AssetImage('assets/images/default_user.png')
+                      as ImageProvider, // Fallback for missing photo
             ),
             SizedBox(height: 8),
             const Text(
@@ -135,13 +160,17 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
             ),
             const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: _getWeather, // Button to fetch weather
+              onPressed: isLoadingWeather
+                  ? null
+                  : _getWeather, // Disable if fetching weather
               style:
                   ElevatedButton.styleFrom(backgroundColor: Colors.grey[800]),
-              child: const Text(
-                "Include Weather",
-                style: TextStyle(color: Colors.white),
-              ),
+              child: isLoadingWeather
+                  ? const CircularProgressIndicator() // Show progress indicator
+                  : const Text(
+                      "Include Weather",
+                      style: TextStyle(color: Colors.white),
+                    ),
             ),
             const SizedBox(height: 16),
             Text(
@@ -161,5 +190,12 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
         ),
       ),
     );
+  }
+
+  @override
+  Future<bool> onWillPop() async {
+    // Override the back button behavior to go directly to the HomePage
+    Navigator.popUntil(context, ModalRoute.withName('/'));
+    return false;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
@@ -11,28 +12,73 @@ class ProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
 
-    return ListView(
-      children: [
-        ProfileHeader(
-          // todo: all usernames must be lowercase and start with underscore
-          // username: "_username",
-          username: user.name,
-          photo: user.photo,
-        ),
-        Divider(color: Colors.grey[800]),
-        ...List.generate(
-          5,
-          (index) => PostCard(
-            username: "_username",
-            photo: Image.memory(kTransparentImage),
-            content: "Sample post $index",
-            upvotes: 15,
-            downvotes: 2,
-            comments: 1,
-            weather: '',
-          ),
-        ),
-      ],
+    return FutureBuilder<DocumentSnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid) // Assuming you store user data by UID
+          .get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return const Center(child: Text('Error loading profile'));
+        }
+
+        final userData = snapshot.data!.data() as Map<String, dynamic>;
+
+        // Fetch user's posts from Firestore
+        return FutureBuilder<QuerySnapshot>(
+          future: FirebaseFirestore.instance
+              .collection('posts')
+              .where('uid',
+                  isEqualTo: user.uid) // Fetch posts for the logged-in user
+              .get(),
+          builder: (context, postSnapshot) {
+            if (postSnapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (postSnapshot.hasError) {
+              return const Center(child: Text('Error loading posts'));
+            }
+
+            final posts = postSnapshot.data!.docs;
+
+            return ListView(
+              children: [
+                ProfileHeader(
+                  username: user.name,
+                  photo: user.photo,
+                ),
+                Divider(color: Colors.grey[800]),
+                // Generate the list of PostCards from the posts fetched
+                ...posts.map((post) {
+                  final postData = post.data() as Map<String, dynamic>;
+                  final postId = post.id;
+                  final content = postData['content'] ?? '';
+                  final upvotes = postData['upvotes'] ?? 0;
+                  final downvotes = postData['downvotes'] ?? 0;
+                  final comments = postData['comments'] ?? 0;
+                  final weather = postData['weather'] ?? '';
+
+                  return PostCard(
+                    username: user.name,
+                    photo: user.photo, // Ensure this is the correct photo URL
+                    content: content,
+                    upvotes: upvotes,
+                    downvotes: downvotes,
+                    comments: comments,
+                    weather: weather,
+                    postId: postId, // Pass the postId to identify the post
+                  );
+                }).toList(),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

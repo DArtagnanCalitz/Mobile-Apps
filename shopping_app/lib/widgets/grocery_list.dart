@@ -94,6 +94,9 @@ class _GroceryListState extends State<GroceryList> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<RefreshIndicatorState> _refreshKey =
+        GlobalKey<RefreshIndicatorState>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Groceries'),
@@ -127,19 +130,33 @@ class _GroceryListState extends State<GroceryList> {
             return const Center(child: Text('No items added yet.'));
           }
 
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (ctx, index) {
-              final item = snapshot.data![index];
-              final isChecked =
-                  _checkedItems.contains(item.id); // Check if item is checked
+          return RefreshIndicator(
+            key: _refreshKey,
+            onRefresh: () {
+              setState(() {
+                _loadedItems = _loadItems();
+              });
 
-              return GroceryItemWidget(
-                item: item,
-                onCheckOff: _checkOffItem,
-                isChecked: isChecked,
-              );
+              return _loadedItems;
             },
+            color: Colors.white,
+            backgroundColor: Colors.blue,
+            child: ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (ctx, index) {
+                final item = snapshot.data![index];
+                final isChecked =
+                    _checkedItems.contains(item.id); // Check if item is checked
+
+                return GroceryItemWidget(
+                  item: item,
+                  onCheckOff: _checkOffItem,
+                  isChecked: isChecked,
+                  index: index,
+                  onShare: _shareList,
+                );
+              },
+            ),
           );
         },
       ),

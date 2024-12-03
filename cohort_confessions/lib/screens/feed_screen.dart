@@ -88,8 +88,11 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                 itemCount: posts.length,
                 itemBuilder: (context, index) {
                   var post = posts[index];
+                  var postData = post.data();
                   String content = post['content'];
                   String weather = post['weather'];
+                  int upvotes = postData['facts'] ?? 0;
+                  int downvotes = postData['caps'] ?? 0;
                   var uid = post['uid'];
 
                   return FutureBuilder<PostUser>(
@@ -110,9 +113,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                             username: '@${user.username}',
                             photo: user.photo!,
                             content: content,
-                            upvotes: 0, // Add functionality for upvotes later
-                            downvotes:
-                                0, // Add functionality for downvotes later
+                            upvotes: upvotes,
+                            downvotes: downvotes,
                             comments: 0, // Add functionality for comments later
                             weather: weather,
                             postId: post.id, // Pass the real postId here

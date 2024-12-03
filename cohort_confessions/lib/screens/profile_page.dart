@@ -58,8 +58,8 @@ class ProfilePage extends ConsumerWidget {
                   final postData = post.data() as Map<String, dynamic>;
                   final postId = post.id;
                   final content = postData['content'] ?? '';
-                  final upvotes = postData['upvotes'] ?? 0;
-                  final downvotes = postData['downvotes'] ?? 0;
+                  final upvotes = postData['facts'] ?? 0;
+                  final downvotes = postData['caps'] ?? 0;
                   final comments = postData['comments'] ?? 0;
                   final weather = postData['weather'] ?? '';
 

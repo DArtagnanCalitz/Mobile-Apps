@@ -59,6 +59,7 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
         print("The number is: $year");
       } catch (e) {
         year = -1;
+        usernameErrorText = e.toString();
         print("Error: $e"); // Output: Error: FormatException
       }
 
@@ -82,6 +83,10 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
         ),
       );
     } catch (e) {
+      setState(() {
+        usernameErrorText = e.toString();
+      });
+      print(e.runtimeType.toString());
       print("Error adding user: $e");
     }
   }
@@ -96,12 +101,18 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
     });
   }
 
-    Future<void> _validateUsernameNotExist(String value) async {
-    var col = await FirebaseFirestore.instance
-          .collection('users');
-    var res = await col.where("name", isEqualTo: usernameController.text.trim()).limit(1).get();
+  Future<void> _validateUsernameNotExist(String value) async {
+    var col = await FirebaseFirestore.instance.collection('users');
+    var res = await col
+        .where("name", isEqualTo: usernameController.text.trim())
+        .limit(1)
+        .get();
     var sent = false;
-    res.docs.forEach((el){if (el.exists) { sent = true; }});
+    res.docs.forEach((el) {
+      if (el.exists) {
+        sent = true;
+      }
+    });
     setState(() {
       if (sent) {
         usernameErrorText = 'Username already exists!';
@@ -110,7 +121,6 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -143,13 +153,20 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                // Call the method to add user to Firestore
-                _validateLowercase(usernameController.text);
-
-                await _validateUsernameNotExist(usernameController.text);
-                if (usernameErrorText != null) {
+                if (usernameController.text == "") {
+                  setState(() {
+                    usernameErrorText = "Username cannot be empty";
+                  });
                   return;
                 }
+
+                _validateLowercase(usernameController.text);
+                if (usernameErrorText != null) return;
+
+                await _validateUsernameNotExist(usernameController.text);
+                if (usernameErrorText != null) return;
+
+                // Call the method to add user to Firestore
                 addUserToFirestore();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),

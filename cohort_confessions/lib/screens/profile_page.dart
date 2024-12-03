@@ -3,7 +3,6 @@ import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -26,6 +25,7 @@ class ProfilePage extends ConsumerWidget {
           return const Center(child: Text('Error loading profile'));
         }
 
+        // TODO: cache data
         final userData = snapshot.data!.data() as Map<String, dynamic>;
 
         // Fetch user's posts from Firestore
@@ -65,7 +65,7 @@ class ProfilePage extends ConsumerWidget {
 
                   return PostCard(
                     username: user.name,
-                    photo: user.photo!, // Ensure this is the correct photo URL
+                    photo: user.photo, // Ensure this is the correct photo URL
                     content: content,
                     upvotes: upvotes,
                     downvotes: downvotes,

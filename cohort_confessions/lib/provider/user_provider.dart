@@ -45,9 +45,6 @@ switch (id) {
           throw const FormatException();
         }
         year = int.parse(year);
-        if (uid == null) {
-          throw const FormatException();
-        }
         Image image = parsePhotoId(photo);
         var user = UserAccount(
           name: name,

@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/screens/create_post_screen.dart';
 import 'package:cohort_confessions/screens/feed_screen.dart';
 import 'package:cohort_confessions/screens/profile_page.dart';
 import 'package:cohort_confessions/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:cohort_confessions/widgets/post_card.dart';
 
 class MainHomePage extends StatefulWidget {
   const MainHomePage({super.key});

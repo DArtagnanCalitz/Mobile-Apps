@@ -135,22 +135,20 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
             CircleAvatar(
               radius: 40,
               backgroundColor: Colors.grey,
-              backgroundImage: user.photo?.image ??
-                  AssetImage('assets/images/default_user.png')
-                      as ImageProvider, // Fallback for missing photo
+              backgroundImage: user.photo.image, // Fallback for missing photo
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             const Text(
               "Write Your Post:",
               style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: postController,
               maxLines: 5,
               decoration: InputDecoration(
                 hintText: "Write your post...",
-                hintStyle: TextStyle(color: Colors.grey),
+                hintStyle: const TextStyle(color: Colors.grey),
                 filled: true,
                 fillColor: Colors.grey[900],
                 border: OutlineInputBorder(
@@ -175,7 +173,7 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
             const SizedBox(height: 16),
             Text(
               weather.isNotEmpty ? "Weather: $weather" : '',
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -192,7 +190,6 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
     );
   }
 
-  @override
   Future<bool> onWillPop() async {
     // Override the back button behavior to go directly to the HomePage
     Navigator.popUntil(context, ModalRoute.withName('/'));

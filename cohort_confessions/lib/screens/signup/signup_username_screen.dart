@@ -4,7 +4,6 @@ import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/screens/signup/signup_confirm_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

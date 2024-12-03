@@ -13,8 +13,13 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController degreeController = TextEditingController();
-  final TextEditingController yearController = TextEditingController();
+  // final TextEditingController degreeController = TextEditingController();
+  var degreeController = "Software Engineering";
+  // final TextEditingController yearController = TextEditingController();
+  var yearController = "2022";
+
+  String? emailErrorText;
+  String? passwordErrorText;
 
   // Function to handle user data addition to Firestore
   Future<void> addUserToFirestore() async {
@@ -22,8 +27,8 @@ class _SignupScreenState extends State<SignupScreen> {
       // Get the user details from the controllers
       String email = emailController.text;
       String password = passwordController.text;
-      String degree = degreeController.text;
-      String year = degreeController.text;
+      String degree = degreeController;
+      String year = yearController;
 
       // Add data to Firestore
       await FirebaseFirestore.instance.collection('users').add({
@@ -39,6 +44,12 @@ class _SignupScreenState extends State<SignupScreen> {
     } catch (e) {
       print("Error adding user: $e");
     }
+  }
+
+  bool _isValidEmail(String email) {
+    // Simple regex for email validation
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+    return emailRegex.hasMatch(email);
   }
 
   @override
@@ -72,36 +83,80 @@ class _SignupScreenState extends State<SignupScreen> {
             CustomTextField(
               controller: emailController,
               label: "Email",
+              errorText: emailErrorText,
             ),
             const SizedBox(height: 16),
             CustomTextField(
               controller: passwordController,
               label: "Password",
               obscureText: true,
+              errorText: passwordErrorText,
             ),
             const SizedBox(height: 16),
-            CustomTextField(
-              controller: degreeController,
-              label: "Degree",
+            // Degree
+            DropdownButton<String>(
+              value: degreeController,
+              items: const [
+                DropdownMenuItem(
+                    value: 'Software Engineering',
+                    child: Text('Software Engineering')),
+                DropdownMenuItem(value: 'Finance', child: Text('Finance')),
+                DropdownMenuItem(value: 'Business', child: Text('Business')),
+              ],
+              onChanged: (String? newValue) {
+                setState(() {
+                  degreeController = newValue!;
+                });
+              },
             ),
             const SizedBox(height: 16),
-            CustomTextField(
-              controller: yearController,
-              label: "Year",
+            // Year
+            DropdownButton<String>(
+              value: yearController,
+              items: const [
+                DropdownMenuItem(value: '2022', child: Text('2022')),
+                DropdownMenuItem(value: '2023', child: Text('2023')),
+                DropdownMenuItem(value: '2024', child: Text('2024')),
+              ],
+              onChanged: (String? newValue) {
+                setState(() {
+                  yearController = newValue!;
+                });
+              },
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Call the method to add user to Firestore
                 // addUserToFirestore();
+                // Email validation
+                setState(() {
+                if (!_isValidEmail(emailController.text)) {
+                  emailErrorText = 'Enter a valid email address';
+                } else {
+                  emailErrorText = null;
+                }
+
+                // Password validation
+                if (passwordController.text.length <= 5) {
+                  passwordErrorText =
+                      'Password must be greater than 5 characters';
+                } else {
+                  passwordErrorText = null;
+                }
+                });
+
+                if (emailErrorText != null || passwordErrorText != null) {
+                  return;
+                }
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (ctx) => SignupUsernameScreen(
                       email: emailController.text,
                       password:
                           passwordController.text, //maybe create account here?
-                      degree: degreeController.text,
-                      year: yearController.text,
+                      degree: degreeController,
+                      year: yearController,
                     ),
                   ),
                 );

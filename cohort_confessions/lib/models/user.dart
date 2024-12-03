@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class UserAccount {
-  const UserAccount({
+  UserAccount({
     required this.name,
     required this.uid,
     required this.major,
@@ -13,5 +13,5 @@ class UserAccount {
   final String uid;
   final String major;
   final int year;
-  final Image photo;
+  Image photo;
 }

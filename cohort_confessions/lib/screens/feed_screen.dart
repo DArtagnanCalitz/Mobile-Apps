@@ -1,13 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/models/post.dart';
+import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FeedScreen extends StatefulWidget {
+class FeedScreen extends ConsumerStatefulWidget {
   const FeedScreen({super.key});
 
   @override
-  State<FeedScreen> createState() => _FeedScreenState();
+  _FeedScreenState createState() => _FeedScreenState();
 }
 
 class PostUser {
@@ -20,11 +22,11 @@ class PostUser {
   final Image? photo;
 }
 
-class _FeedScreenState extends State<FeedScreen> {
+class _FeedScreenState extends ConsumerState<FeedScreen> {
   Map<String, PostUser> users = {}; // key: uid
 
   // Fetches user data from Firestore, if not already cached
-  Future<PostUser> _getPostUser(String uid) async {
+  Future<PostUser> _getPostUser(String uid, WidgetRef ref) async {
     if (uid == "undefined") {
       return PostUser(
         username: "ROCKBOTTOM",
@@ -39,13 +41,14 @@ class _FeedScreenState extends State<FeedScreen> {
         Map<String, dynamic>? data = docSnapshot.data();
         var name = data?['name'] ?? 'Unknown'; // Fallback if name is missing
         var photo = data?['photo'] ?? ''; // Fallback if photo is missing
+        Image img = ref.read(userProvider.notifier).parsePhotoId(photo);
+
         var user = PostUser(
           username: name,
-          photo: photo.isNotEmpty
-              ? Image.network(photo)
-              : Image.asset('assets/images/placeholder.webp'),
+          photo: img,
         );
         users[uid] = user; // Cache the user data for later use
+        
       } else {
         // Handle user not found gracefully
         return PostUser(
@@ -91,7 +94,7 @@ class _FeedScreenState extends State<FeedScreen> {
                   var uid = post['uid'];
 
                   return FutureBuilder<PostUser>(
-                    future: _getPostUser(uid),
+                    future: _getPostUser(uid, ref),
                     builder: (context, projectSnap) {
                       if (projectSnap.connectionState ==
                           ConnectionState.waiting) {

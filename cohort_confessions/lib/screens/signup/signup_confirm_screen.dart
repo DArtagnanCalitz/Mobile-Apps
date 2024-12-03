@@ -1,13 +1,79 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cohort_confessions/models/user.dart';
+import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/screens/signup/signup_congrat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SignupConfirmScreen extends StatefulWidget {
+  const SignupConfirmScreen({
+    super.key,
+    required this.ref,
+  });
+
+  final WidgetRef ref;
+
   @override
   _SignupConfirmScreenState createState() => _SignupConfirmScreenState();
 }
 
 class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
   var _selection = 0;
+  // final user = ref.watch(userProvider);
+  // _SignupConfirmScreenState(this._ref);
+
+  late UserAccount user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = widget.ref.watch(userProvider);
+  }
+
+  Future<void> addUserToFirestore() async {
+    try {
+      var photo_name;
+      switch (_selection) {
+        case 0:
+          photo_name = "dog";
+          break;
+        case 1:
+          photo_name = "cat";
+          break;
+        default:
+          photo_name = "dog";
+          break;
+        // TODO: Add more icons
+      }
+
+      // Add photo id to Firestore
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update({
+        'photo': photo_name,
+      });
+
+      // set Image on local user
+      var img = widget.ref.read(userProvider.notifier).parsePhotoId(photo_name);
+      widget.ref.read(userProvider.notifier).setImage(img);
+
+      // Send toast
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Updated profile picture!')),
+      );
+
+      // Navigate to confirmation (profile) page after successful addition
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => const SignupCongratScreen(),
+        ),
+      );
+    } catch (e) {
+      print("Error adding user: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,12 +138,7 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
             ElevatedButton(
               onPressed: () {
                 // Call the method to add user to Firestore
-                // addUserToFirestore();
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => SignupCongratScreen(),
-                  ),
-                );
+                addUserToFirestore();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: const Text(
@@ -85,16 +146,24 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            TextButton(
-              onPressed: () {
-                // Navigate to SearchScreen for sign-up
-                Navigator.pop(context);
-              },
-              child: const Text(
-                "Back",
-                style: TextStyle(color: Colors.blue),
-              ),
+            const SizedBox(
+              height: 40,
             ),
+            const Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "To change your account information",
+                  // style: TextStyle(color: Colors.blue),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "go to the settings!",
+                  // style: TextStyle(color: Colors.blue),
+                ),
+              ],
+            )
           ],
         ),
       ),

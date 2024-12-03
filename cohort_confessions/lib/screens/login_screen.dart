@@ -48,39 +48,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       setState(() {
         _message = 'Login successful: ${userCredential.user?.email}';
       });
+              if (userCredential.user?.uid == null) {
+          throw const FormatException();
+        }
       final collection = FirebaseFirestore.instance.collection('users');
       var docSnapshot = await collection.doc(userCredential.user?.uid).get();
       if (docSnapshot.exists) {
         Map<String, dynamic>? data = docSnapshot.data();
-        var name = data?['name'];
-        var year = data?['year'];
-        var major = data?['major'];
-        var photo = data?['photo'];
-        if (int.tryParse(year) == null) {
-          throw const FormatException();
-        }
-        year = int.parse(year);
-        if (userCredential.user?.uid == null) {
-          throw const FormatException();
-        }
-        Image image;
-        switch (photo) {
-          case 'dog':
-            image = Image.asset('assets/images/dog.jpg');
-            break;
-          case 'cat':
-            image = Image.asset('assets/images/dog.jpg');
-            break;
-          default:
-            image = Image.asset('assets/images/undefined.webp');
-        }
-        var user = UserAccount(
-          name: name,
-          uid: userCredential.user!.uid,
-          year: year,
-          major: major,
-          photo: image,
-        );
+        var user = ref.read(userProvider.notifier).parseUser(data!, userCredential.user!.uid);
         ref.read(userProvider.notifier).setUser(user);
       }
 

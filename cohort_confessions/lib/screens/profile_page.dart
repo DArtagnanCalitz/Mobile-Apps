@@ -65,7 +65,7 @@ class ProfilePage extends ConsumerWidget {
 
                   return PostCard(
                     username: user.name,
-                    photo: user.photo, // Ensure this is the correct photo URL
+                    photo: user.photo!, // Ensure this is the correct photo URL
                     content: content,
                     upvotes: upvotes,
                     downvotes: downvotes,

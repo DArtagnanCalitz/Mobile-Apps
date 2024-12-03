@@ -46,6 +46,46 @@ class ProfilePage extends ConsumerWidget {
 
             final posts = postSnapshot.data!.docs;
 
+            debugPrint("HERE!!!");
+
+            var content;
+
+            if (posts.isEmpty) {
+              content = const [
+                Center(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      Text("You have no posts, try creating one!"),
+                    ],
+                  ),
+                )
+              ];
+            } else {
+              content = // Generate the list of PostCards from the posts fetched
+
+                  posts.map((post) {
+                final postData = post.data() as Map<String, dynamic>;
+                final postId = post.id;
+                final content = postData['content'] ?? '';
+                final upvotes = postData['facts'] ?? 0;
+                final downvotes = postData['caps'] ?? 0;
+                final comments = postData['comments'] ?? 0;
+                final weather = postData['weather'] ?? '';
+
+                return PostCard(
+                  username: user.name,
+                  photo: user.photo, // Ensure this is the correct photo URL
+                  content: content,
+                  upvotes: upvotes,
+                  downvotes: downvotes,
+                  comments: comments,
+                  weather: weather,
+                  postId: postId, // Pass the postId to identify the post
+                );
+              });
+            }
+
             return ListView(
               children: [
                 ProfileHeader(
@@ -53,27 +93,7 @@ class ProfilePage extends ConsumerWidget {
                   photo: user.photo,
                 ),
                 Divider(color: Colors.grey[800]),
-                // Generate the list of PostCards from the posts fetched
-                ...posts.map((post) {
-                  final postData = post.data() as Map<String, dynamic>;
-                  final postId = post.id;
-                  final content = postData['content'] ?? '';
-                  final upvotes = postData['facts'] ?? 0;
-                  final downvotes = postData['caps'] ?? 0;
-                  final comments = postData['comments'] ?? 0;
-                  final weather = postData['weather'] ?? '';
-
-                  return PostCard(
-                    username: user.name,
-                    photo: user.photo, // Ensure this is the correct photo URL
-                    content: content,
-                    upvotes: upvotes,
-                    downvotes: downvotes,
-                    comments: comments,
-                    weather: weather,
-                    postId: postId, // Pass the postId to identify the post
-                  );
-                }).toList(),
+                ...content,
               ],
             );
           },

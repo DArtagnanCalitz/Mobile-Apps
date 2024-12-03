@@ -9,7 +9,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class SignupConfirmScreen extends StatefulWidget {
   const SignupConfirmScreen({
@@ -245,7 +244,7 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
             const SizedBox(
               height: 40,
             ),
-            const Row(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

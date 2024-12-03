@@ -46,16 +46,16 @@ class ProfilePage extends ConsumerWidget {
 
             final posts = postSnapshot.data!.docs;
 
-            debugPrint("HERE!!!");
-
             var content;
 
             if (posts.isEmpty) {
               content = const [
                 Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 10),
+                      SizedBox(height: 120),
                       Text("You have no posts, try creating one!"),
                     ],
                   ),

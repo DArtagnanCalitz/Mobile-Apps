@@ -106,8 +106,8 @@ class _CreatePostPageState extends ConsumerState<CreatePostPage> {
       });
 
       // Pass the postId to navigate back with the postId
-      Navigator.pop(
-          context, postRef.id); // Pass the postId back to the previous screen
+      Navigator.popAndPushNamed(
+          context, "/home"); // Pass the postId back to the previous screen
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

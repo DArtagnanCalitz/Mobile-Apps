@@ -36,7 +36,7 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
     user = widget.ref.watch(userProvider);
   }
 
-    File? _selectedImage;
+  File? _selectedImage;
   bool _isUploading = false;
 
   final ImagePicker _imagePicker = ImagePicker();
@@ -48,7 +48,6 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
       final XFile? pickedFile = await _imagePicker.pickImage(
         source: ImageSource.gallery,
       );
-
 
       if (pickedFile != null) {
         setState(() {
@@ -233,10 +232,15 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
                 addUserToFirestore();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: _selection == 2 ? Text("Select Image", style: TextStyle(color: Colors.white),): Text(
-                "Done!",
-                style: TextStyle(color: Colors.white),
-              ),
+              child: _selection == 2
+                  ? const Text(
+                      "Select Image",
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : const Text(
+                      "Done!",
+                      style: TextStyle(color: Colors.white),
+                    ),
             ),
             const SizedBox(
               height: 40,

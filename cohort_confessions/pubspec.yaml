@@ -45,7 +45,6 @@ dependencies:
   transparent_image: ^2.0.1
   firebase_storage: ^12.3.6
   image_picker: ^1.1.2
-  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:

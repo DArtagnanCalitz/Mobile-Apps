@@ -77,16 +77,14 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
     });
 
     try {
-      // TODO: unconstrain to jpg?
       String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
       UploadTask uploadTask =
           _firebaseStorage.ref(fileName).putFile(_selectedImage!);
 
       TaskSnapshot snapshot = await uploadTask;
-      String downloadUrl = await snapshot.ref.getDownloadURL();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Image uploaded successfully: $downloadUrl')),
+        const SnackBar(content: Text('Image uploaded successfully!')),
       );
 
       // Clear the selected image after upload

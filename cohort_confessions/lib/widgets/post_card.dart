@@ -176,13 +176,20 @@ class _PostCardState extends State<PostCard> {
                     ],
                   ),
                   // Check if the weather is not null and not empty
+                  // const SizedBox(width: 120),
                   if (widget.weather != null && widget.weather.isNotEmpty) ...[
-                    const Icon(Icons.wb_sunny, color: Colors.yellow, size: 20),
-                    const SizedBox(width: 4),
-                    Text(
-                      widget.weather,
-                      style: const TextStyle(color: Colors.white, fontSize: 14),
-                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.wb_sunny,
+                            color: Colors.yellow, size: 20),
+                        const SizedBox(width: 15),
+                        Text(
+                          widget.weather,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 14),
+                        ),
+                      ],
+                    )
                   ],
                 ],
               ),

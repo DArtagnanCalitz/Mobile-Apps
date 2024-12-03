@@ -3,6 +3,7 @@ import 'package:cohort_confessions/models/user.dart';
 import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/screens/signup/signup_confirm_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
+import 'package:cohort_confessions/widgets/userinfo/username.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,12 +27,10 @@ class SignupUsernameScreen extends ConsumerStatefulWidget {
 }
 
 class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
-  final TextEditingController usernameController = TextEditingController();
-
-  String? usernameErrorText;
+  final UsernameController usernameController = UsernameController();
 
   // Function to handle user data addition to Firestore
-  Future<void> addUserToFirestore() async {
+  Future<void> addUserToFirestore(String name) async {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -40,7 +39,7 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
       );
 
       // Get the user details from the controllers
-      String username = usernameController.text.trim();
+      String username = name.trim();
 
       var uid = userCredential.user?.uid;
 
@@ -59,7 +58,7 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
         print("The number is: $year");
       } catch (e) {
         year = -1;
-        usernameErrorText = e.toString();
+        usernameController.setError(e.toString());
         print("Error: $e"); // Output: Error: FormatException
       }
 
@@ -73,7 +72,7 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
       ref.read(userProvider.notifier).setUser(user);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Account created successfully!')),
+        const SnackBar(content: Text('Account created successfully!')),
       );
 
       // Navigate to confirmation (profile) page after successful addition
@@ -84,42 +83,11 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
       );
     } catch (e) {
       setState(() {
-        usernameErrorText = e.toString();
+        usernameController.setError(e.toString());
       });
       print(e.runtimeType.toString());
       print("Error adding user: $e");
     }
-  }
-
-  void _validateLowercase(String value) {
-    setState(() {
-      if (value.isNotEmpty && value != value.toLowerCase()) {
-        usernameErrorText = 'Text must be all lowercase';
-      } else {
-        usernameErrorText = null;
-      }
-    });
-  }
-
-  Future<void> _validateUsernameNotExist(String value) async {
-    var col = await FirebaseFirestore.instance.collection('users');
-    var res = await col
-        .where("name", isEqualTo: usernameController.text.trim())
-        .limit(1)
-        .get();
-    var sent = false;
-    res.docs.forEach((el) {
-      if (el.exists) {
-        sent = true;
-      }
-    });
-    setState(() {
-      if (sent) {
-        usernameErrorText = 'Username already exists!';
-      } else {
-        usernameErrorText = null;
-      }
-    });
   }
 
   @override
@@ -145,29 +113,15 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
             const SizedBox(height: 20),
-            CustomTextField(
-              controller: usernameController,
-              label: "Username",
-              errorText: usernameErrorText,
-            ),
+            UserInfoUsername(controller: usernameController),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                if (usernameController.text == "") {
-                  setState(() {
-                    usernameErrorText = "Username cannot be empty";
-                  });
-                  return;
+                String? res = await usernameController.validate();
+                if (res != null) {
+                  // Call the method to add user to Firestore
+                  addUserToFirestore(res);
                 }
-
-                _validateLowercase(usernameController.text);
-                if (usernameErrorText != null) return;
-
-                await _validateUsernameNotExist(usernameController.text);
-                if (usernameErrorText != null) return;
-
-                // Call the method to add user to Firestore
-                addUserToFirestore();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: const Text(

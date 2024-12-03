@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/models/user.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,30 @@ class UserNotifier extends StateNotifier<UserAccount> {
     state.photo = image;
   }
 
+  void setMajor(String major) async {
+    state.major = major;
+    await FirebaseFirestore.instance.collection('users').doc(state.uid).update({
+      'degree': major,
+      'modifiedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  void setYear(int year) async {
+    state.year = year;
+    await FirebaseFirestore.instance.collection('users').doc(state.uid).update({
+      'year': year,
+      'modifiedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  void setName(String name) async {
+    state.name = name;
+    await FirebaseFirestore.instance.collection('users').doc(state.uid).update({
+      'name': name,
+      'modifiedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
   Image parsePhotoId(String id) {
     Image image;
     switch (id) {
@@ -33,9 +58,13 @@ class UserNotifier extends StateNotifier<UserAccount> {
       default:
         if (id.startsWith("gfs://")) {
           var path = id.substring(6);
-          image = Image.network(path, errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return Image.asset('assets/images/undefined.webp');
-          },);
+          image = Image.network(
+            path,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return Image.asset('assets/images/undefined.webp');
+            },
+          );
         } else {
           image = Image.asset('assets/images/undefined.webp');
         }

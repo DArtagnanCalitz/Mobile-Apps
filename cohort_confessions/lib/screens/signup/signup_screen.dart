@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/screens/signup/signup_username_screen.dart';
 import 'package:cohort_confessions/widgets/text_input.dart';
+import 'package:cohort_confessions/widgets/userinfo/major.dart';
+import 'package:cohort_confessions/widgets/userinfo/year.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -52,6 +54,18 @@ class _SignupScreenState extends State<SignupScreen> {
     return emailRegex.hasMatch(email);
   }
 
+  changeMajorController(String newValue) {
+    setState(() {
+      degreeController = newValue;
+    });
+  }
+
+  changeYearController(String newValue) {
+    setState(() {
+      yearController = newValue;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,35 +108,15 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             const SizedBox(height: 16),
             // Degree
-            DropdownButton<String>(
-              value: degreeController,
-              items: const [
-                DropdownMenuItem(
-                    value: 'Software Engineering',
-                    child: Text('Software Engineering')),
-                DropdownMenuItem(value: 'Finance', child: Text('Finance')),
-                DropdownMenuItem(value: 'Business', child: Text('Business')),
-              ],
-              onChanged: (String? newValue) {
-                setState(() {
-                  degreeController = newValue!;
-                });
-              },
+            UserInfoMajor(
+              degreeController: degreeController,
+              onChange: changeMajorController,
             ),
             const SizedBox(height: 16),
             // Year
-            DropdownButton<String>(
-              value: yearController,
-              items: const [
-                DropdownMenuItem(value: '2022', child: Text('2022')),
-                DropdownMenuItem(value: '2023', child: Text('2023')),
-                DropdownMenuItem(value: '2024', child: Text('2024')),
-              ],
-              onChanged: (String? newValue) {
-                setState(() {
-                  yearController = newValue!;
-                });
-              },
+            UserInfoYear(
+              yearController: yearController,
+              onChange: changeYearController,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -131,19 +125,19 @@ class _SignupScreenState extends State<SignupScreen> {
                 // addUserToFirestore();
                 // Email validation
                 setState(() {
-                if (!_isValidEmail(emailController.text)) {
-                  emailErrorText = 'Enter a valid email address';
-                } else {
-                  emailErrorText = null;
-                }
+                  if (!_isValidEmail(emailController.text)) {
+                    emailErrorText = 'Enter a valid email address';
+                  } else {
+                    emailErrorText = null;
+                  }
 
-                // Password validation
-                if (passwordController.text.length <= 5) {
-                  passwordErrorText =
-                      'Password must be greater than 5 characters';
-                } else {
-                  passwordErrorText = null;
-                }
+                  // Password validation
+                  if (passwordController.text.length <= 5) {
+                    passwordErrorText =
+                        'Password must be greater than 5 characters';
+                  } else {
+                    passwordErrorText = null;
+                  }
                 });
 
                 if (emailErrorText != null || passwordErrorText != null) {

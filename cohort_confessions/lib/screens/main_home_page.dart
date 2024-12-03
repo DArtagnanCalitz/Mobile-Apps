@@ -15,10 +15,6 @@ class _MainHomePageState extends State<MainHomePage> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
-
     if (index == 2) {
       // Navigate to CreatePostPage (doesn't replace the home page)
       Navigator.of(context).push(
@@ -29,6 +25,10 @@ class _MainHomePageState extends State<MainHomePage> {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => SettingsPage()),
       );
+    } else {
+      setState(() {
+        _selectedPageIndex = index;
+      });
     }
   }
 

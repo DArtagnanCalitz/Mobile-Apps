@@ -100,10 +100,8 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     builder: (context, projectSnap) {
                       if (projectSnap.connectionState ==
                           ConnectionState.waiting) {
-                        return const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
-                        );
+                        // TODO: Should be animated based on number of connections
+                        return SizedBox(height: 15);
                       }
 
                       if (projectSnap.connectionState == ConnectionState.done) {

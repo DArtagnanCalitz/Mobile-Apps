@@ -47,7 +47,6 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
           photo: img,
         );
         users[uid] = user; // Cache the user data for later use
-        
       } else {
         // Handle user not found gracefully
         return PostUser(
@@ -109,7 +108,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           var user = projectSnap.data!;
                           return PostCard(
                             username: '@${user.username}',
-                            photo: user.photo!,
+                            photo: user.photo,
                             content: content,
                             upvotes: upvotes,
                             downvotes: downvotes,

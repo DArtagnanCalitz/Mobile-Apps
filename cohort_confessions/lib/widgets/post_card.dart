@@ -5,7 +5,7 @@ class PostCard extends StatefulWidget {
   final String postId; // Unique post ID for Firestore
   final String username;
   final String content;
-  final Image photo;
+  final Image? photo;
   final int upvotes;
   final int downvotes;
   final int comments;
@@ -134,7 +134,7 @@ class _PostCardState extends State<PostCard> {
                   CircleAvatar(
                     backgroundColor: Colors.grey[700],
                     radius: 20,
-                    backgroundImage: widget.photo.image,
+                    backgroundImage: widget.photo?.image ?? Image.asset('assets/images/undefined.webp').image,
                   ),
                   const SizedBox(width: 12),
                   Text(

@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cohort_confessions/models/user.dart';
 import 'package:cohort_confessions/provider/user_provider.dart';
 import 'package:cohort_confessions/screens/signup/signup_congrat_screen.dart';
+import 'package:cohort_confessions/widgets/circular_avatar_selector.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SignupConfirmScreen extends StatefulWidget {
   const SignupConfirmScreen({
@@ -30,6 +36,91 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
     user = widget.ref.watch(userProvider);
   }
 
+    File? _selectedImage;
+  bool _isUploading = false;
+
+  final ImagePicker _imagePicker = ImagePicker();
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+  // Function to pick an image
+  Future<bool> _pickImage() async {
+    try {
+      final XFile? pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+
+      if (pickedFile != null) {
+        setState(() {
+          _selectedImage = File(pickedFile.path);
+        });
+      }
+      return true;
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick an image: $e')),
+      );
+      return false;
+    }
+  }
+
+  // Function to upload the image to Firebase Storage
+  Future<String?> _uploadImage() async {
+    if (_selectedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select an image')),
+      );
+      return null;
+    }
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      // TODO: unconstrain to jpg?
+      String fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      UploadTask uploadTask =
+          _firebaseStorage.ref(fileName).putFile(_selectedImage!);
+
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Image uploaded successfully: $downloadUrl')),
+      );
+
+      // Clear the selected image after upload
+      setState(() {
+        _selectedImage = null;
+      });
+
+      String link = await snapshot.ref.getDownloadURL();
+      return "gfs://$link";
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Upload failed: $e')),
+      );
+      return null;
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
+    }
+  }
+
+  // Returns the path to object with gfs:// prefixed or null if error
+  Future<String?> getCustomImage() async {
+    bool e = await _pickImage();
+    if (!e) return null;
+    String? s = await _uploadImage();
+    if (s != null) {
+      return s;
+    }
+    return null;
+  }
+
   Future<void> addUserToFirestore() async {
     try {
       var photo_name;
@@ -40,6 +131,12 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
         case 1:
           photo_name = "cat";
           break;
+        case 2:
+          String? s = await getCustomImage();
+          if (s == null) {
+            return;
+          }
+          photo_name = s;
         default:
           photo_name = "dog";
           break;
@@ -74,6 +171,12 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
     }
   }
 
+  setSelection(int index) {
+    setState(() {
+      _selection = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,37 +204,26 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () => setState(() => _selection = 0),
-                  child: CircleAvatar(
-                    radius: 55,
-                    backgroundColor: _selection == 0
-                        ? Colors.blueAccent
-                        : Colors.transparent,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.grey,
-                      backgroundImage:
-                          Image.asset('assets/images/dog.jpg').image,
-                    ),
-                  ),
+                CircularAvatarSelector(
+                  index: 0,
+                  image: 'assets/images/dog.jpg',
+                  selection: _selection,
+                  onSelect: setSelection,
                 ),
-                const SizedBox(width: 25),
-                GestureDetector(
-                  onTap: () => setState(() => _selection = 1),
-                  child: CircleAvatar(
-                    radius: 55,
-                    backgroundColor: _selection == 1
-                        ? Colors.blueAccent
-                        : Colors.transparent,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.grey,
-                      backgroundImage:
-                          Image.asset('assets/images/cat.jpg').image,
-                    ),
-                  ),
-                )
+                const SizedBox(width: 15),
+                CircularAvatarSelector(
+                  index: 1,
+                  image: 'assets/images/cat.jpg',
+                  selection: _selection,
+                  onSelect: setSelection,
+                ),
+                const SizedBox(width: 15),
+                CircularAvatarSelector(
+                  index: 2,
+                  image: null,
+                  selection: _selection,
+                  onSelect: setSelection,
+                ),
               ],
             ),
             const SizedBox(height: 20),
@@ -141,7 +233,7 @@ class _SignupConfirmScreenState extends State<SignupConfirmScreen> {
                 addUserToFirestore();
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-              child: const Text(
+              child: _selection == 2 ? Text("Select Image", style: TextStyle(color: Colors.white),): Text(
                 "Done!",
                 style: TextStyle(color: Colors.white),
               ),

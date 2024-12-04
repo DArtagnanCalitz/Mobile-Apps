@@ -30,8 +30,10 @@ class _UserInfoMajorState extends State<UserInfoMajor> {
       items: const [
         DropdownMenuItem(
             value: 'Software Engineering', child: Text('Software Engineering')),
-        DropdownMenuItem(value: 'Finance', child: Text('Finance')),
         DropdownMenuItem(value: 'Business', child: Text('Business')),
+        DropdownMenuItem(value: 'Finance', child: Text('Finance')),
+        DropdownMenuItem(value: 'Mechanical Engineering', child: Text('Mechanical Engineering')),
+        DropdownMenuItem(value: 'Construction Management', child: Text('Construction Management')),
       ],
       onChanged: (String? newValue) {
         widget.onChange(newValue);

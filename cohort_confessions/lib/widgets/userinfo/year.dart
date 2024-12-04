@@ -28,9 +28,11 @@ class _UserInfoYearState extends State<UserInfoYear> {
     return DropdownButton<String>(
       value: yearController,
       items: const [
-        DropdownMenuItem(value: '2022', child: Text('2022')),
-        DropdownMenuItem(value: '2023', child: Text('2023')),
         DropdownMenuItem(value: '2024', child: Text('2024')),
+        DropdownMenuItem(value: '2025', child: Text('2025')),
+        DropdownMenuItem(value: '2026', child: Text('2026')),
+        DropdownMenuItem(value: '2027', child: Text('2027')),
+        DropdownMenuItem(value: '2028', child: Text('2028')),
       ],
       onChanged: (String? newValue) {
         widget.onChange(newValue);

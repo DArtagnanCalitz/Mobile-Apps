@@ -18,7 +18,7 @@ class _SignupScreenState extends State<SignupScreen> {
   // final TextEditingController degreeController = TextEditingController();
   var degreeController = "Software Engineering";
   // final TextEditingController yearController = TextEditingController();
-  var yearController = "2022";
+  var yearController = "2025";
 
   String? emailErrorText;
   String? passwordErrorText;

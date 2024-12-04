@@ -4,11 +4,22 @@ import 'package:cohort_confessions/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfilePage extends ConsumerWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends ConsumerState<ProfilePage> {
+  int num_facts = 0;
+  int num_caps = 0;
+  int num_posts = 0;
+  bool hasRun = false;
+  bool hasRun2 = false;
+
+  @override
+  Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
 
     return FutureBuilder<DocumentSnapshot>(
@@ -91,6 +102,9 @@ class ProfilePage extends ConsumerWidget {
                 ProfileHeader(
                   username: user.name,
                   photo: user.photo,
+                  facts: num_facts,
+                  caps: num_caps,
+                  posts: num_posts,
                 ),
                 Divider(color: Colors.grey[800]),
                 ...content,
@@ -107,11 +121,17 @@ class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
     super.key,
     required this.username,
+    required this.facts,
+    required this.caps,
+    required this.posts,
     this.photo,
   });
 
   final String username;
   final Image? photo;
+  final int facts;
+  final int caps;
+  final int posts;
 
   @override
   Widget build(BuildContext context) {
@@ -143,24 +163,24 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Column(
                 children: [
                   Text(
-                    '8 posts',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    '$posts posts',
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    '8 replies',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    '$facts FACTS',
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    '2 upvotes',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    '$caps CAP',
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ],
               ),

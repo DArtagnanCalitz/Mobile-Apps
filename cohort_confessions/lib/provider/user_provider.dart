@@ -74,14 +74,10 @@ class UserNotifier extends StateNotifier<UserAccount> {
   }
 
   UserAccount parseUser(Map<String, dynamic> data, String uid) {
-    var name = data['name'];
-    var year = data['year'];
-    var major = data['major'];
-    var photo = data['photo'];
-    if (int.tryParse(year) == null) {
-      throw const FormatException();
-    }
-    year = int.parse(year);
+    String name = data['name'];
+    int year = data['year'];
+    String major = data['major'];
+    String photo = data['photo'];
     Image image = parsePhotoId(photo);
     var user = UserAccount(
       name: name,

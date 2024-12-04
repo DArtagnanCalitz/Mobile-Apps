@@ -61,6 +61,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } catch (e) {
       setState(() {
         _message = 'Login failed: $e';
+        print(e);
       });
     }
   }

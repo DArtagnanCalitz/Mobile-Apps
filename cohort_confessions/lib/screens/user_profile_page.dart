@@ -37,7 +37,7 @@ class UserProfilePage extends StatelessWidget {
 
           return ListView(
             children: [
-              ProfileHeader(username: username),
+              ProfileHeader(username: username, facts: 0, caps: 0, posts: 0, ),
               ...posts.map((post) {
                 final postData = post.data() as Map<String, dynamic>;
                 final postId =

@@ -26,10 +26,11 @@ class SignupCongratScreen extends StatelessWidget {
               "Welcome to your cohort!",
               style: TextStyle(color: Colors.white, fontSize: 24),
             ),
-            const Text(
-              "2025 Senior",
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
+            // TODO:
+            // const Text(
+            //   "2025 Senior",
+            //   style: TextStyle(color: Colors.white, fontSize: 18),
+            // ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {

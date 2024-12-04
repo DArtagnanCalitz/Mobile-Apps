@@ -40,17 +40,7 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
 
       // Get the user details from the controllers
       String username = name.trim();
-
       var uid = userCredential.user?.uid;
-
-      // Add data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'name': username.trim(),
-        'degree': widget.degree.trim(),
-        'year': widget.year.trim(),
-        'createdAt': FieldValue.serverTimestamp(),
-      });
-
       int year;
 
       try {
@@ -61,6 +51,14 @@ class _SignupUsernameScreenState extends ConsumerState<SignupUsernameScreen> {
         usernameController.setError(e.toString());
         print("Error: $e"); // Output: Error: FormatException
       }
+
+      // Add data to Firestore
+      await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        'name': username.trim(),
+        'degree': widget.degree.trim(),
+        'year': year,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
 
       var user = UserAccount(
           name: username.trim(),

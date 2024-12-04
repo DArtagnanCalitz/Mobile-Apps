@@ -163,29 +163,29 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Text(
-                    '$posts posts',
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '$facts FACTS',
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '$caps CAP',
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Column(
+          //       children: [
+          //         Text(
+          //           '$posts posts',
+          //           style: const TextStyle(color: Colors.white, fontSize: 14),
+          //         ),
+          //         const SizedBox(height: 4),
+          //         Text(
+          //           '$facts FACTS',
+          //           style: const TextStyle(color: Colors.white, fontSize: 14),
+          //         ),
+          //         const SizedBox(height: 4),
+          //         Text(
+          //           '$caps CAP',
+          //           style: const TextStyle(color: Colors.white, fontSize: 14),
+          //         ),
+          //       ],
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

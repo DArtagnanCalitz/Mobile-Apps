@@ -76,7 +76,7 @@ class UserNotifier extends StateNotifier<UserAccount> {
   UserAccount parseUser(Map<String, dynamic> data, String uid) {
     String name = data['name'];
     int year = data['year'];
-    String major = data['major'];
+    String major = data['degree'];
     String photo = data['photo'];
     Image image = parsePhotoId(photo);
     var user = UserAccount(
